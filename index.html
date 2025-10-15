@@ -7,202 +7,481 @@
 <style>
   :root{
     --bg:#0f1720; --card:#0b1220; --muted:#9aa7b2; --accent:#2dd4bf; --accent2:#60a5fa; --text:#e6eef3;
-    --danger:#ff7b7b; --ok:#7ee787; --glass: rgba(255,255,255,0.03);
+    --danger:#ff7b7b; --ok:#7ee787;
+    --glass: rgba(255,255,255,0.03);
     font-family: Inter, Roboto, "Segoe UI", Arial, sans-serif;
   }
-  html,body{margin:0;background:#071220;color:var(--text);scroll-behavior:smooth;}
-  body{padding-top:60px;}
-  header{position:fixed;top:0;left:0;width:100%;background:#0b1220;box-shadow:0 2px 10px rgba(0,0,0,0.5);
-         display:flex;align-items:center;justify-content:space-between;padding:10px 20px;z-index:1000;}
-  .logo{font-size:18px;font-weight:600;color:var(--accent);}
-  nav{display:flex;gap:18px;}
-  nav a{color:var(--text);text-decoration:none;font-size:14px;padding:6px;border-radius:6px;}
-  nav a:hover{background:rgba(255,255,255,0.08);}
-  .hamburger{display:none;flex-direction:column;cursor:pointer;gap:4px;}
-  .bar{width:24px;height:3px;background-color:var(--text);border-radius:3px;}
-  @media (max-width:800px){
-    nav{display:none;position:absolute;top:60px;left:0;width:100%;flex-direction:column;
-        background:#0b1220;border-top:1px solid rgba(255,255,255,0.05);}
-    nav.show{display:flex;}
-    .hamburger{display:flex;}
+  html,body{height:100%; margin:0; background:linear-gradient(180deg,#071028 0%, #071220 100%); color:var(--text);}
+  .wrap{max-width:1200px;margin:24px auto;padding:20px;}
+  header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+  h1{font-size:20px;margin:0}
+  p.lead{margin:0;color:var(--muted);font-size:13px}
+
+  .grid{display:grid;grid-template-columns:1fr 380px;gap:18px}
+  .panel{background:var(--card);padding:14px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.45)}
+  .small{font-size:13px;color:var(--muted)}
+  .section-title{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .section-title h2{font-size:16px;margin:0}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.04);text-align:left}
+  th{color:var(--accent2);font-weight:600}
+  .badge{background:var(--glass);padding:4px 8px;border-radius:8px;font-size:12px;color:var(--muted)}
+  button, select{background:#071422;border:1px solid rgba(255,255,255,0.03);color:var(--text);padding:8px 10px;border-radius:8px;cursor:pointer}
+  button.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0;color:#022026}
+  .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;background:rgba(255,255,255,0.02);padding:6px;border-radius:6px}
+  footer{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
+
+  @media (max-width:980px){ .grid{grid-template-columns:1fr; } .panel{margin-bottom:12px} }
+
+  /* === Menú de navegación === */
+  nav{position:fixed;top:0;left:0;width:100%;background:#0b1220cc;backdrop-filter:blur(8px);z-index:999;
+      display:flex;justify-content:space-between;align-items:center;padding:10px 20px;}
+  nav .menu-links{display:flex;gap:18px;}
+  nav a{color:var(--text);text-decoration:none;font-size:14px;}
+  nav a:hover{color:var(--accent2);}
+  .menu-btn{display:none;flex-direction:column;gap:4px;cursor:pointer;}
+  .menu-btn div{width:22px;height:2px;background:var(--text);}
+  @media (max-width:700px){
+    .menu-links{display:none;flex-direction:column;gap:10px;position:absolute;top:50px;left:0;width:100%;
+      background:#0b1220ee;padding:10px;}
+    .menu-links.active{display:flex;}
+    .menu-btn{display:flex;}
   }
 
-  .wrap{max-width:1200px;margin:0 auto;padding:20px;}
-  h2{font-size:18px;color:var(--accent2);margin-top:40px;}
-  .panel{background:var(--card);padding:16px;margin-bottom:18px;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,0.4);}
-  table{width:100%;border-collapse:collapse;margin-top:10px;}
-  th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.05);}
-  th{color:var(--accent);text-align:left;}
-  p.small, .small{font-size:13px;color:var(--muted);}
-  footer{margin:20px 0;text-align:center;color:var(--muted);font-size:12px;}
-  button,select,input[type=range]{background:#09131f;border:1px solid rgba(255,255,255,0.05);
-                                   color:var(--text);padding:6px 8px;border-radius:6px;cursor:pointer;}
-  button.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0;color:#021;}
+  /* === QR === */
+  .qr-container{text-align:center;margin-top:40px;}
+  .qr-container img{width:150px;height:150px;}
 </style>
 </head>
-<body>
 
-<header>
-  <div class="logo">Conceptos SO</div>
-  <nav id="menu">
+<body>
+<!-- ==== MENÚ SUPERIOR ==== -->
+<nav>
+  <div class="menu-btn" onclick="document.querySelector('.menu-links').classList.toggle('active')">
+    <div></div><div></div><div></div>
+  </div>
+  <div class="menu-links">
     <a href="#contenedores">Contenedores vs VM</a>
     <a href="#hipervisores">Hipervisores</a>
-    <a href="#es">Entrada/Salida</a>
+    <a href="#es">E/S</a>
     <a href="#buffers">Buffers</a>
     <a href="#drivers">Drivers</a>
     <a href="#overcommit">Overcommit</a>
-    <a href="#qrPanel">QR</a>
-  </nav>
-  <div class="hamburger" id="hamburger">
-    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
   </div>
-</header>
+</nav>
 
+<div class="wrap" style="margin-top:60px">
+ <!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Resumen Interactivo - Conceptos de Sistemas Operativos</title>
+<style>
+  :root{
+    --bg:#0f1720; --card:#0b1220; --muted:#9aa7b2; --accent:#2dd4bf; --accent2:#60a5fa; --text:#e6eef3;
+    --danger:#ff7b7b; --ok:#7ee787;
+    --glass: rgba(255,255,255,0.03);
+    font-family: Inter, Roboto, "Segoe UI", Arial, sans-serif;
+  }
+  html,body{height:100%; margin:0; background:linear-gradient(180deg,#071028 0%, #071220 100%); color:var(--text);}
+  .wrap{max-width:1200px;margin:24px auto;padding:20px;}
+  header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+  h1{font-size:20px;margin:0}
+  p.lead{margin:0;color:var(--muted);font-size:13px}
+
+  .grid{display:grid;grid-template-columns:1fr 380px;gap:18px}
+  .panel{background:var(--card);padding:14px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.45)}
+  .small{font-size:13px;color:var(--muted)}
+  .section-title{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .section-title h2{font-size:16px;margin:0}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.04);text-align:left}
+  th{color:var(--accent2);font-weight:600}
+  .badge{background:var(--glass);padding:4px 8px;border-radius:8px;font-size:12px;color:var(--muted)}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  button, select{background:#071422;border:1px solid rgba(255,255,255,0.03);color:var(--text);padding:8px 10px;border-radius:8px;cursor:pointer}
+  button.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0;color:#022026}
+  .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;background:rgba(255,255,255,0.02);padding:6px;border-radius:6px}
+  .row{display:flex;gap:12px;align-items:center}
+  .accordion{margin-top:8px}
+  .acc-item{border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);margin-bottom:8px}
+  .acc-head{background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);padding:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+  .acc-body{padding:12px;display:none;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
+  .kbd{background:#051018;padding:4px 6px;border-radius:6px;font-size:13px;color:var(--muted)}
+  footer{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
+
+  /* small visual components */
+  .mem-visual{height:28px;border-radius:6px;overflow:hidden;background:#051018;border:1px solid rgba(255,255,255,0.03)}
+  .block{height:100%;display:inline-block;vertical-align:top}
+  .free{background:#133e2b}
+  .proc{background:#2a9d8f}
+  .proc2{background:#60a5fa}
+  .proc3{background:#f59e0b}
+  .legend{display:flex;gap:10px;margin-top:6px;font-size:13px}
+
+  /* responsive */
+  @media (max-width:980px){ .grid{grid-template-columns:1fr; } .panel{margin-bottom:12px} }
+</style>
+</head>
+<body>
 <div class="wrap">
-
-  <section id="contenedores" class="panel">
-    <h2>Contenedores vs Máquinas Virtuales (memoria)</h2>
-    <p class="small">Los contenedores comparten el kernel del host y usan la memoria virtual del host; las máquinas virtuales ejecutan su propio kernel y gestionan memoria virtual independiente.</p>
-    <table>
-      <tr><th>Aspecto</th><th>Contenedores</th><th>Máquinas Virtuales</th></tr>
-      <tr><td>Aislamiento</td><td>Por procesos/namespaces</td><td>Por hipervisor</td></tr>
-      <tr><td>Memoria virtual</td><td>Usan la del host (limitada con cgroups)</td><td>Tienen su propia paginación virtual</td></tr>
-      <tr><td>Overhead</td><td>Bajo</td><td>Mayor (SO completo)</td></tr>
-      <tr><td>Uso típico</td><td>Microservicios, apps ligeras</td><td>Infraestructura completa</td></tr>
-    </table>
-  </section>
-
-  <section id="hipervisores" class="panel">
-    <h2>Hipervisores — traducción de direcciones (SPT vs EPT)</h2>
-    <p class="small">Los hipervisores deben traducir direcciones del SO invitado hacia la memoria física del host. Con <b>Shadow Page Tables</b> el hipervisor mantiene tablas combinadas; con <b>EPT</b> (Extended Page Tables) el hardware soporta traducción anidada directamente.</p>
-    <table>
-      <tr><th>Técnica</th><th>Idea</th><th>Ventaja</th></tr>
-      <tr><td>SPT</td><td>El hipervisor simula tablas combinadas guest→host</td><td>Funciona sin soporte HW</td></tr>
-      <tr><td>EPT</td><td>Traducción asistida por hardware</td><td>Más eficiente</td></tr>
-    </table>
-  </section>
-
-  <section id="es" class="panel">
-    <h2>E/S Programada, por Interrupciones y DMA</h2>
-    <p class="small">En E/S programada, la CPU consulta el dispositivo continuamente (polling). En E/S por interrupciones, el dispositivo notifica a la CPU. El DMA permite transferencias directas memoria-dispositivo sin intervención de CPU.</p>
-    <table>
-      <tr><th>Modo</th><th>Cómo funciona</th><th>Ventaja</th><th>Desventaja</th></tr>
-      <tr><td>Programada</td><td>CPU consulta estado del dispositivo</td><td>Sencilla</td><td>Ineficiente</td></tr>
-      <tr><td>Interrupciones</td><td>Dispositivo avisa al estar listo</td><td>Eficiente</td><td>Complejidad en ISR</td></tr>
-      <tr><td>DMA</td><td>Controlador copia datos sin CPU</td><td>CPU libre</td><td>Hardware adicional</td></tr>
-    </table>
-  </section>
-
-  <section id="buffers" class="panel">
-    <h2>Buffers (simple, doble, circular)</h2>
-    <p class="small">Los buffers equilibran la velocidad entre productor y consumidor. El buffer circular permite flujo continuo en tiempo real (audio, video, red).</p>
-    <table>
-      <tr><th>Tipo</th><th>Descripción</th><th>Uso típico</th></tr>
-      <tr><td>Simple</td><td>Un bloque alternado llenar/vaciar</td><td>Impresoras</td></tr>
-      <tr><td>Doble</td><td>Dos buffers alternos (ping-pong)</td><td>CPU+I/O simultáneo</td></tr>
-      <tr><td>Circular</td><td>Varios bloques en anillo</td><td>Streaming, redes</td></tr>
-    </table>
-  </section>
-
-  <section id="drivers" class="panel">
-    <h2>Ejemplos de Drivers Reales</h2>
-    <ul class="small">
-      <li><b>e1000</b> (Ethernet Intel): utiliza colas RX/TX y DMA.</li>
-      <li><b>NVMe</b>: alta velocidad, colas múltiples y reordenamiento.</li>
-      <li><b>Impresora (driver de carácter)</b>: usa buffers en kernel.</li>
-      <li><b>virtio</b>: drivers paravirtualizados en entornos KVM/QEMU.</li>
-    </ul>
-  </section>
-
-  <section id="overcommit" class="panel">
-    <h2>Overcommit de Memoria</h2>
-    <p class="small">Overcommit significa asignar más memoria virtual que física. Es útil en entornos virtualizados, pero conlleva riesgos de swapping excesivo u OOM (Out Of Memory).</p>
-    <table>
-      <tr><th>Concepto</th><th>Memoria Virtual</th><th>Overcommit</th></tr>
-      <tr><td>Garantía</td><td>Direcciones respaldadas por swap</td><td>No garantiza RAM física disponible</td></tr>
-      <tr><td>Riesgo</td><td>Degradación por swap</td><td>Fallo del sistema por OOM</td></tr>
-      <tr><td>Gestión</td><td>Kernel y swap</td><td>Hipervisores: ballooning, límites dinámicos</td></tr>
-    </table>
-  </section>
-
-  <!-- SECCIÓN QR -->
-  <section id="qrPanel" class="panel">
-    <h2>Generar código QR para compartir la página</h2>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-      <input id="qrUrl" type="text" value="" style="flex:1;padding:6px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);background:#071623;color:#e6eef3" />
-      <button id="btnGenQR" class="primary">Generar QR</button>
-      <button id="btnDownloadQR">Descargar PNG</button>
+  <header>
+    <div>
+      <h1>Resumen interactivo — Conceptos de Sistemas Operativos</h1>
+      <p class="lead">Contenedores vs VM, paginación en hipervisores, DMA y buffers, E/S, overcommit, y ejemplos de drivers. Explora con visualizaciones.</p>
     </div>
-    <div id="qrHolder" style="margin-top:10px;min-height:120px;display:flex;align-items:center;gap:12px">
-      <div id="qrcode" style="background:#ffffff;padding:8px;border-radius:8px"></div>
-      <div style="font-size:13px;color:#9aa7b2">Escaneá con el móvil para abrir la página</div>
+    <div style="margin-left:auto">
+      <span class="badge">TP / Estudio</span>
     </div>
-  </section>
+  </header>
 
+  <div class="grid">
+    <!-- Main content -->
+    <main>
+      <!-- Section: Contenedores vs VM -->
+      <section class="panel">
+        <div class="section-title"><h2>Contenedores vs Máquinas Virtuales (memoria)</h2></div>
+        <p class="small">Resumen corto: los <strong>contenedores</strong> comparten el kernel del host y usan la <em>memoria virtual del host</em>. Las máquinas virtuales (VMs) ejecutan su propio kernel y tienen su propia memoria virtual que debe ser mapeada al hardware físico por el hipervisor.</p>
+
+        <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap">
+          <div style="flex:1">
+            <table>
+              <thead><tr><th>Aspecto</th><th>Contenedores</th><th>VM (Hipervisor)</th></tr></thead>
+              <tbody>
+                <tr><td>Aislamiento</td><td>Procesos y namespaces (comparten kernel)</td><td>Kernel separado, aislamiento fuerte</td></tr>
+                <tr><td>Memoria Virtual</td><td>Usan la VM del host (cgroups para límites)</td><td>VM tiene su propia VM; hipervisor traduce a RAM física</td></tr>
+                <tr><td>Overhead</td><td>Bajo</td><td>Alto (SO completo por VM)</td></tr>
+                <tr><td>Casos uso</td><td>Microservicios, despliegues rápidos</td><td>Entornos heterogéneos, aislamiento fuerte</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="width:320px">
+            <div class="section-title"><h2>Simulador: Overcommit visual</h2></div>
+            <div class="panel" style="padding:8px;background:rgba(255,255,255,0.02)">
+              <label class="small">Memoria física del host (MB)</label>
+              <input id="hostMem" type="range" min="512" max="32768" value="8192" style="width:100%"/>
+              <div class="row" style="justify-content:space-between"><small id="hostMemVal">8192 MB</small><small id="vmsVal">VMs: 3 × 4096</small></div>
+
+              <label class="small" style="margin-top:8px">Máquinas Virtuales (cantidad)</label>
+              <input id="vmCount" type="range" min="1" max="8" value="2" style="width:100%"/>
+              <div class="row" style="justify-content:space-between"><small id="vmCountVal">2 VMs</small><small id="overcommitVal">Overcommit ratio: 1.0</small></div>
+
+              <button class="primary" style="margin-top:10px" onclick="updateOvercommit()">Actualizar</button>
+              <p class="small" style="margin-top:8px">Este control estima el <em>overcommit ratio</em> si cada VM solicita X GB. Modificá y observá riesgo de swap o OOM.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Pag. y EPT/SPT -->
+      <section class="panel" style="margin-top:12px">
+        <div class="section-title"><h2>Hipervisores — traducción de direcciones (SPT vs EPT)</h2></div>
+        <p class="small">En virtualización hay <strong>dos</strong> niveles de paginación: la del SO invitado (guest) y la del hipervisor (host). Traducir la dirección lógica del proceso invitado hasta la dirección física real implica combinar o acelerar ambas traducciones.</p>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div style="flex:1">
+            <table>
+              <thead><tr><th>Técnica</th><th>Idea</th><th>Ventaja</th></tr></thead>
+              <tbody>
+                <tr><td>Shadow Page Tables</td><td>Hipervisor mantiene tablas que representan la composición de guest→host</td><td>Funciona sin soporte HW, pero costoso</td></tr>
+                <tr><td>Extended Page Tables (EPT)</td><td>Soporte de CPU para traducción anidada (Intel), evita mantener SPT</td><td>Más rápido y eficiente</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="width:320px">
+            <div style="font-weight:600;margin-bottom:6px">Demostración (animada)</div>
+            <svg id="virtSVG" width="320" height="180" style="background:#041021;border-radius:8px"></svg>
+            <div class="small" style="margin-top:6px">Pulsa <button onclick="runVirtAnim()">Animar traducción</button> para ver la ruta: lógica (guest) → physGuest → physHost.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: E/S - polling vs interrupciones -->
+      <section class="panel" style="margin-top:12px">
+        <div class="section-title"><h2>E/S: Programada (polling) vs Interrupciones</h2></div>
+        <div style="display:flex;gap:12px">
+          <div style="flex:1">
+            <table>
+              <thead><tr><th>Modo</th><th>Cómo</th><th>Pro/Contra</th></tr></thead>
+              <tbody>
+                <tr><td>E/S Programada</td><td>CPU consulta continuamente estado del dispositivo (polling)</td><td>Sencillo / Muy ineficiente (consume CPU)</td></tr>
+                <tr><td>E/S por Interrupciones</td><td>Dispositivo solicita atención (IRQ) cuando está listo</td><td>Eficiente / Requiere manejo de interrupciones</td></tr>
+                <tr><td>DMA</td><td>Controlador DMA mueve bloques entre memoria y dispositivo</td><td>CPU libre, ideal para transferencias grandes</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="width:320px">
+            <div style="font-weight:600;margin-bottom:6px">Simulador simple</div>
+            <div class="small">Seleccioná modo y pulsa <button onclick="simulateIO()">Simular 10 ticks</button></div>
+            <select id="ioMode">
+              <option value="poll">Polling</option>
+              <option value="irq">Interrupciones</option>
+              <option value="dma">DMA</option>
+            </select>
+            <div id="ioLog" class="mono" style="margin-top:8px;height:92px;overflow:auto;padding:8px;background:rgba(255,255,255,0.02)"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Buffers -->
+      <section class="panel" style="margin-top:12px">
+        <div class="section-title"><h2>Buffers: simple, doble y circular</h2></div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="flex:1">
+            <p class="small">Los buffers coordinan la velocidad entre productor/consumidor. El doble buffer permite solapamiento; el buffer circular permite flujo continuo con un índice de lectura/escritura.</p>
+            <table>
+              <thead><tr><th>Tipo</th><th>Descripción</th><th>Uso típico</th></tr></thead>
+              <tbody>
+                <tr><td>Simple</td><td>Un único buffer; alterna llenar/vaciar</td><td>Impresión secuencial</td></tr>
+                <tr><td>Doble</td><td>Dos buffers alternados (ping-pong)</td><td>Transferencias con overlap (I/O/CPU)</td></tr>
+                <tr><td>Circular</td><td>Multiples slots en anillo, índices r/w</td><td>Streaming de audio/video, redes</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="width:320px">
+            <div style="font-weight:600;margin-bottom:6px">Animación buffer circular</div>
+            <svg id="ring" width="320" height="160" style="background:#04101a;border-radius:8px"></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Drivers reales -->
+      <section class="panel" style="margin-top:12px">
+        <div class="section-title"><h2>Ejemplos reales de drivers (resumen)</h2></div>
+        <ul class="small">
+          <li><strong>Controlador de red (NIC)</strong> — ej. <em>e1000</em> en Linux: manejo IRQ, rx/tx queues, DMA y zero-copy.</li>
+          <li><strong>Drivers de bloque (discos, NVMe)</strong> — reordenamiento de I/O, colas, uso intensivo de DMA.</li>
+          <li><strong>Drivers de carácter (impresoras, serial)</strong> — manejan <code>read/write/ioctl</code> y buffers en espacio kernel.</li>
+          <li><strong>Drivers virtuales</strong> — virtio (KVM) o controladores paravirtualizados para VM con mejor rendimiento.</li>
+        </ul>
+        <p class="small">Estos ejemplos se encuentran descritos y ejemplificados en libros como Tanenbaum, Stallings y Silberschatz y en documentación de Linux (drivers/).</p>
+      </section>
+
+      <!-- Section: Overcommit -->
+      <section class="panel" style="margin-top:12px">
+        <div class="section-title"><h2>Overcommit y riesgos operacionales</h2></div>
+        <p class="small">Overcommit = asignar más memoria virtual que memoria física disponible, confiando en que no todo será usado al mismo tiempo. Riesgos: swapping intenso, latencia alta, OOM (Out-Of-Memory).</p>
+        <table>
+          <thead><tr><th>Concepto</th><th>Memoria virtual</th><th>Overcommit</th></tr></thead>
+          <tbody>
+            <tr><td>Qué garantiza</td><td>Direcciones lógicas respaldadas por swap/archivo</td><td>Ninguna garantía física inmediata; riesgo si demanda concurrente</td></tr>
+            <tr><td>Riesgo</td><td>Swap (lento)</td><td>OOM y degradación severa</td></tr>
+            <tr><td>Manejo</td><td>Kernel + swap</td><td>Hipervisor: ballooning, compresión, limitación (cgroups)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+    </main>
+
+    <!-- Sidebar -->
+    <aside>
+      <div class="panel" style="margin-bottom:12px">
+        <div class="section-title"><h2>Atajos</h2></div>
+        <div class="small">
+          <p><strong>Animaciones</strong>: usa botones "Animar traducción" y "Simular I/O".</p>
+          <p><strong>Exportar CSV / PNG</strong>: disponibles en la app ejemplo (simulador GUI).</p>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:12px">
+        <div class="section-title"><h2>Comparativa breve</h2></div>
+        <table>
+          <thead><tr><th></th><th>Uso típico</th><th>Eficiencia</th></tr></thead>
+          <tbody>
+            <tr><td>Containers</td><td>Apps y microservicios</td><td>Alta</td></tr>
+            <tr><td>VMs</td><td>Infraestructura completa</td><td>Media-baja</td></tr>
+            <tr><td>Overcommit</td><td>Consolidación</td><td>Riesgo si saturado</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <div class="section-title"><h2>Mini-simuladores</h2></div>
+
+        <div style="margin-bottom:8px">
+          <label class="small">Mostrar ejemplo de paginación (frames)</label>
+          <button onclick="drawFrames()">Ver frames</button>
+          <div id="frames" class="mono" style="margin-top:8px;padding:8px;height:96px;overflow:auto;background:rgba(255,255,255,0.02)"></div>
+        </div>
+
+        <div>
+          <label class="small">Mostrar buffer circular</label>
+          <button onclick="ringAnim()">Animar ring</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="small">Hecho para estudio: contenedores vs VM, E/S (polling/IRQ/DMA), buffers, drivers reales, hipervisores y overcommit. Guarda este archivo para referencia offline.</footer>
 </div>
 
-<footer>© 2025 - Resumen Interactivo de Sistemas Operativos</footer>
-
-<!-- Librería QR -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
 <script>
-const burger=document.getElementById("hamburger");
-const menu=document.getElementById("menu");
-burger.addEventListener("click",()=> menu.classList.toggle("show"));
+/* -------------------------
+   Interacciones y animaciones
+   ------------------------- */
 
-// QR logic
-const qrUrlInput=document.getElementById('qrUrl');
-const btnGen=document.getElementById('btnGenQR');
-const btnDownload=document.getElementById('btnDownloadQR');
-const qrHolder=document.getElementById('qrcode');
+function q(id){return document.getElementById(id)}
 
-if(location.protocol==='file:'){
-  qrUrlInput.placeholder='Serví este archivo con un servidor (python -m http.server) para compartir.';
-}else{
-  qrUrlInput.value=location.href;
+/* Overcommit visual controls */
+const host = q('hostMem'), vms = q('vmCount');
+const hostVal = q('hostMemVal'), vmVal = q('vmCountVal'), ocVal = q('overcommitVal');
+host.oninput = ()=> hostVal.textContent = host.value + ' MB';
+vms.oninput = ()=> vmVal.textContent = vms.value + ' VMs';
+function updateOvercommit(){
+  const hostMB = parseInt(host.value);
+  const vmCount = parseInt(vms.value);
+  const vmSizeMB = 4096; // ejemplo: cada VM pide 4GB
+  const totalRequested = vmCount * vmSizeMB;
+  const ratio = (totalRequested / hostMB).toFixed(2);
+  ocVal.textContent = 'Overcommit ratio: ' + ratio;
+  // color feedback
+  if(ratio <= 1) ocVal.style.color = '#7ee787';
+  else if(ratio <= 2) ocVal.style.color = '#ffcf5c';
+  else ocVal.style.color = '#ff7b7b';
 }
 
-async function generarQR(text){
-  qrHolder.innerHTML='';
-  try{
-    const opts={errorCorrectionLevel:'H',type:'image/png',width:240,margin:2};
-    const dataUrl=await QRCode.toDataURL(text,opts);
-    const img=document.createElement('img');
-    img.src=dataUrl; img.alt='QR';
-    img.style.width='180px'; img.style.height='180px'; img.style.borderRadius='8px';
-    qrHolder.appendChild(img);
-    qrHolder.dataset.qrdata=dataUrl;
-  }catch(err){
-    console.error('QR error',err);
-    const url='https://chart.googleapis.com/chart?cht=qr&chs=240x240&chl='+encodeURIComponent(text);
-    const img=document.createElement('img');
-    img.src=url; img.alt='QR fallback';
-    img.style.width='180px'; img.style.height='180px';
-    qrHolder.appendChild(img);
-    qrHolder.dataset.qrdata=url;
+/* Virtualization SVG animation: guest -> physGuest -> host phys */
+function runVirtAnim(){
+  const svg = q('virtSVG');
+  svg.innerHTML = '';
+  const w = svg.clientWidth, h = svg.clientHeight;
+  // draw 3 boxes
+  function rect(x,y,label,color){
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',x); r.setAttribute('y',y); r.setAttribute('width',120); r.setAttribute('height',36);
+    r.setAttribute('fill',color); r.setAttribute('rx',6);
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', x+60); t.setAttribute('y', y+22); t.setAttribute('text-anchor','middle');
+    t.setAttribute('fill','#0b1220'); t.setAttribute('font-size',12); t.textContent = label;
+    g.appendChild(r); g.appendChild(t); svg.appendChild(g);
+    return g;
+  }
+  const g1 = rect(12,20,'Logical addr (Guest)','#60a5fa');
+  const g2 = rect(140,20,'Guest phys (pseudo)','#2dd4bf');
+  const g3 = rect(268,20,'Host phys (real)','#f59e0b');
+  // arrows
+  function arrow(x1,y1,x2,y2){
+    const l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',x1); l.setAttribute('y1',y1); l.setAttribute('x2',x2); l.setAttribute('y2',y2);
+    l.setAttribute('stroke','#9aa7b2'); l.setAttribute('stroke-width',2); svg.appendChild(l);
+  }
+  arrow(132,38,140,38); arrow(260,38,268,38);
+  // animate dot path
+  let t=0;
+  const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dot.setAttribute('r',6); dot.setAttribute('fill','#fff'); svg.appendChild(dot);
+  function step(){
+    t++;
+    if(t<40){ dot.setAttribute('cx', 60 + t*1.8); dot.setAttribute('cy', 38); }
+    else if(t<80){ dot.setAttribute('cx', 188 + (t-40)*1.8); dot.setAttribute('cy', 38); }
+    else{ dot.setAttribute('cx', 316); dot.setAttribute('cy', 38); }
+    if(t<120) requestAnimationFrame(step);
+  }
+  step();
+}
+
+/* I/O simulation (poll vs irq vs dma) */
+function simulateIO(){
+  const mode = q('ioMode').value;
+  const log = q('ioLog');
+  log.textContent = '';
+  // simple parameters
+  const deviceReadyAt = Math.floor(Math.random()*6)+2;
+  log.textContent += `device will be ready at tick ${deviceReadyAt}\n`;
+  for(let tick=0;tick<10;tick++){
+    if(mode==='poll'){
+      log.textContent += `tick ${tick}: CPU polls -> `;
+      if(tick===deviceReadyAt) log.textContent += 'device ready -> handle data\n'; else log.textContent += 'not ready\n';
+    } else if(mode==='irq'){
+      log.textContent += `tick ${tick}: CPU does work\n`;
+      if(tick===deviceReadyAt) log.textContent += `  device raises IRQ -> CPU handles interrupt\n`;
+    } else { // DMA
+      log.textContent += `tick ${tick}: DMA transfers in background\n`;
+      if(tick===deviceReadyAt) log.textContent += `  DMA reports completion -> CPU notified\n`;
+    }
   }
 }
 
-btnDownload.addEventListener('click',()=>{
-  const data=qrHolder.dataset.qrdata;
-  if(!data){alert('Primero generá el QR');return;}
-  if(data.startsWith('data:')){
-    const a=document.createElement('a');
-    a.href=data; a.download='qr_page.png';
-    document.body.appendChild(a); a.click(); a.remove();
-  }else window.open(data,'_blank');
-});
+/* Buffer circular animation */
+function drawRing(){
+  const svg = q('ring');
+  svg.innerHTML = '';
+  const w = svg.clientWidth, h = svg.clientHeight;
+  const cx = w/2, cy = h/2, r = Math.min(w,h)/2 - 20;
+  const slots = 8;
+  for(let i=0;i<slots;i++){
+    const angle = (i/slots)*Math.PI*2 - Math.PI/2;
+    const x = cx + Math.cos(angle)*r;
+    const y = cy + Math.sin(angle)*r;
+    const circ = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circ.setAttribute('cx',x); circ.setAttribute('cy',y); circ.setAttribute('r',16);
+    circ.setAttribute('fill','#0b1220'); circ.setAttribute('stroke','#1f6f8b'); svg.appendChild(circ);
+  }
+}
+function ringAnim(){
+  drawRing();
+  const svg = q('ring');
+  const w = svg.clientWidth, h = svg.clientHeight;
+  const cx = w/2, cy = h/2, r = Math.min(w,h)/2 - 20;
+  const slots = 8;
+  let producer = 0, consumer = 4;
+  const dots = [];
+  for(let i=0;i<slots;i++){
+    const angle = (i/slots)*Math.PI*2 - Math.PI/2;
+    const x = cx + Math.cos(angle)*r;
+    const y = cy + Math.sin(angle)*r;
+    const d = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    d.setAttribute('cx',x); d.setAttribute('cy',y); d.setAttribute('r',8);
+    d.setAttribute('fill','#072b2a'); svg.appendChild(d); dots.push(d);
+  }
+  let step=0;
+  function tick(){
+    // producer writes
+    dots[producer].setAttribute('fill','#2a9d8f');
+    // consumer reads previous slot
+    if(step>1){ dots[consumer].setAttribute('fill','#041018'); consumer=(consumer+1)%slots; }
+    producer=(producer+1)%slots;
+    step++;
+    if(step<32) setTimeout(tick,350);
+  }
+  tick();
+}
 
-btnGen.addEventListener('click',()=>{
-  const txt=qrUrlInput.value.trim();
-  if(!txt){alert('Ingresá una URL válida');return;}
-  generarQR(txt);
-});
+/* Frames view (sidebar) */
+function drawFrames(){
+  const out = q('frames'); out.textContent = '';
+  const frames = 12;
+  const occupied = Math.floor(Math.random()*frames);
+  for(let i=0;i<frames;i++){
+    if(i<occupied) out.textContent += `[F${i}: used] `; else out.textContent += `[F${i}: free] `;
+  }
+}
 
-if(qrUrlInput.value){generarQR(qrUrlInput.value);}
+/* init small visuals */
+document.addEventListener('DOMContentLoaded', ()=>{
+  updateOvercommit();
+  drawRing();
+});
 </script>
-
 </body>
 </html>
 
+
+  </section>
+
+  <!-- al final de TODO el contenido -->
+  <div class="qr-container">
+    <p>Escaneá este código para abrir la página:</p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://tu-pagina-ejemplo.com" alt="QR code">
+  </div>
+</div>
+
+<script>
+/* mantiene el menú responsive funcional */
+</script>
+</body>
+</html>
