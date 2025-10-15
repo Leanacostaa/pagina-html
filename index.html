@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Resumen Interactivo - Conceptos de Sistemas Operativos</title>
+<title>DESAFÍO MEMORIA VIRTUAL - Sitio Interactivo</title>
 <style>
   :root{
     --bg:#0f1720; --card:#0b1220; --muted:#9aa7b2; --accent:#2dd4bf; --accent2:#60a5fa; --text:#e6eef3;
@@ -12,7 +12,11 @@
     font-family: Inter, Roboto, "Segoe UI", Arial, sans-serif;
   }
   html,body{height:100%; margin:0; background:linear-gradient(180deg,#071028 0%, #071220 100%); color:var(--text);}
-  .wrap{max-width:1200px;margin:24px auto;padding:20px;}
+  /* Se modifica el .wrap para contener los dos bloques */
+  .wrap{max-width:1200px;margin:24px auto;padding:20px;} 
+  /* Estilo para el contenedor del Bloque 1 */
+  .block-container{max-width:1200px;margin:24px auto;padding:20px;} 
+
   header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
   h1{font-size:20px;margin:0}
   p.lead{margin:0;color:var(--muted);font-size:13px}
@@ -27,7 +31,7 @@
   th{color:var(--accent2);font-weight:600}
   .badge{background:var(--glass);padding:4px 8px;border-radius:8px;font-size:12px;color:var(--muted)}
   .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-  button, select{background:#071422;border:1px solid rgba(255,255,255,0.03);color:var(--text);padding:8px 10px;border-radius:8px;cursor:pointer}
+  button, select, input[type="text"], input[type="number"]{background:#071422;border:1px solid rgba(255,255,255,0.03);color:var(--text);padding:8px 10px;border-radius:8px;cursor:pointer}
   button.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0;color:#022026}
   .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;background:rgba(255,255,255,0.02);padding:6px;border-radius:6px}
   .row{display:flex;gap:12px;align-items:center}
@@ -69,23 +73,106 @@
 
 <body>
 <nav>
-  <div class="menu-btn" onclick="document.querySelector('.menu-links').classList.toggle('active')">
+  <div class="menu-btn" onclick="document.getElementById('menuLinks').classList.toggle('active')">
     <div></div><div></div><div></div>
   </div>
-  <div class="menu-links">
-    <a href="#contenedores">Contenedores vs VM</a>
+  <div class="menu-links" id="menuLinks">
+    <a href="#conceptos">Conceptos Fundamentales</a>
+    <a href="#simulador-traduccion">Traducción de Direcciones</a>
+    <a href="#algoritmos">Simulador de Reemplazo</a>
+    <a href="#contenedores">Docker vs VM</a>
     <a href="#hipervisores">Hipervisores</a>
-    <a href="#es">E/S</a>
-    <a href="#buffers">Buffers</a>
-    <a href="#drivers">Drivers</a>
+    <a href="#es">E/S y DMA</a>
     <a href="#overcommit-section">Overcommit</a>
   </div>
 </nav>
 
-<div class="wrap" style="margin-top:60px">
+<div class="block-container" style="margin-top:60px">
   <header>
     <div>
-      <h1>Resumen interactivo — Conceptos de Sistemas Operativos</h1>
+      <h1>DESAFÍO MEMORIA VIRTUAL - Sitio Web Interactivo 🧠</h1>
+      <p class="lead">BLOQUE 1: Conceptos y Práctica. Explora la gestión de memoria en SO: Paginación, Segmentación y Traducción de Direcciones.</p>
+    </div>
+    <div style="margin-left:auto">
+      <span class="badge">Conceptos y Práctica</span>
+    </div>
+  </header>
+
+  <main style="display:block; grid-template-columns:none; width:100%;">
+    
+    <section id="conceptos" class="panel">
+      <div class="section-title"><h2>Conceptos Fundamentales de Gestión de Memoria</h2></div>
+      
+      <div style="margin-bottom: 15px;">
+        <div style="font-weight: 600; color: var(--accent2);">1. Memoria Virtual</div>
+        <p class="small">Técnica que permite a cada proceso operar como si tuviera acceso exclusivo a una gran memoria contigua (**espacio de direcciones lógicas**). Facilita la multiprogramación y el aislamiento.</p>
+      </div>
+      
+      <div style="margin-bottom: 15px;">
+        <div style="font-weight: 600; color: var(--accent2);">2. Tablas de Páginas (Paginación)</div>
+        <p class="small">Mecanismo que divide el espacio lógico en **páginas** y la RAM en **marcos (frames)**. La Tabla de Páginas mapea Página $\rightarrow$ Marco. Es la base de SO como Windows/Linux. <span class="mono" style="display:block;margin-top:4px;">Dirección Lógica = Número de Página + Offset</span></p>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <div style="font-weight: 600; color: var(--accent2);">3. Segmentación y 4. Segmentación Paginada</div>
+        <p class="small">La **Segmentación** divide la memoria en bloques de **tamaño variable** por unidades lógicas (código, datos). La **Segmentación Paginada** combina ambos para obtener protección lógica (segmentos) con gestión eficiente (páginas).</p>
+      </div>
+      
+      <hr style="border:0;border-top:1px solid rgba(255,255,255,0.05);margin:15px 0">
+      
+      <div class="section-title" style="margin-bottom: 4px;"><h3>Comparativa de Modelos de Administración</h3></div>
+      <table>
+        <thead><tr><th>Modelo</th><th>Fragmentación</th><th>Tamaño</th><th>Ventaja</th></tr></thead>
+        <tbody>
+          <tr><td>Paginación</td><td>Interna (pequeña)</td><td>Fijo</td><td>Fácil gestión y swapping</td></tr>
+          <tr><td>Segmentación Pag.</td><td>Interna (pequeña)</td><td>Variable</td><td>Lo mejor de ambos: protección y eficiencia</td></tr>
+        </tbody>
+      </table>
+    </section>
+    
+    <section id="simulador-traduccion" class="panel" style="margin-top:12px">
+      <div class="section-title"><h2>Simulador: Traducción Lógica $\rightarrow$ Física (Paginación)</h2></div>
+      <p class="small">Ingresa una Dirección Lógica y observa la traducción. Usamos 16 bits para la dirección lógica y un tamaño de página de 256 bytes (8 bits para offset).</p>
+
+      <div class="controls">
+        <label class="small">Dirección Lógica (decimal 0-65535):</label>
+        <input type="number" id="logAddr" value="10500" style="width:120px;text-align:center;">
+        <button class="primary" onclick="traducirDireccion()">Traducir</button>
+      </div>
+
+      <div id="traduccionResultado" class="mono" style="min-height:100px;margin-top:8px;padding:10px;background:rgba(255,255,255,0.02);color:var(--text);font-size:14px;">
+        Esperando dirección lógica...
+      </div>
+      
+      <p class="small" style="margin-top:10px;">
+        <strong>Parámetros fijos:</strong> Tamaño de página: 256 bytes. Máximo 256 marcos. 
+      </p>
+    </section>
+
+    <section id="algoritmos" class="panel" style="margin-top:12px">
+      <div class="section-title"><h2>Simulador: Algoritmos de Reemplazo de Páginas</h2></div>
+      <p class="small">Visualiza cómo FIFO y LRU manejan una secuencia de referencias con memoria limitada (marcos).</p>
+
+      <div class="controls">
+        <label class="small">Secuencia de Referencia (ej. 1,2,3,4,1,2,5,1):</label>
+        <input type="text" id="refSeq" value="1, 2, 3, 4, 1, 2, 5, 1" style="width:250px;">
+        <label class="small">Marcos (3-5):</label>
+        <input type="number" id="frameCount" value="3" min="3" max="5" style="width:60px;text-align:center;">
+        <button class="primary" onclick="simularReemplazo()">Simular</button>
+      </div>
+      <div id="simuladorOutput" class="mono" style="min-height:150px;margin-top:8px;padding:10px;background:rgba(255,255,255,0.02);overflow:auto;font-size:12px;">
+        Resultados de simulación (FIFO vs LRU) aparecerán aquí.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+
+<div class="wrap"> 
+  <header>
+    <div>
+      <h1>Categoría 3: Investigación y Profundización (Aplicación en Tecnologías Modernas)— Conceptos de Sistemas Operativos</h1> 
       <p class="lead">Contenedores vs VM, paginación en hipervisores, DMA y buffers, E/S, overcommit, y ejemplos de drivers. Explora con visualizaciones.</p>
     </div>
     <div style="margin-left:auto">
@@ -146,7 +233,7 @@
           <div style="width:320px">
             <div style="font-weight:600;margin-bottom:6px">Demostración (animada)</div>
             <svg id="virtSVG" width="320" height="180" style="background:#041021;border-radius:8px"></svg>
-            <div class="small" style="margin-top:6px">Pulsa <button onclick="runVirtAnim()">Animar traducción</button> para ver la ruta: lógica (guest) → physGuest → physHost.</div>
+            <div class="small" style="margin-top:6px">Pulsa <button onclick="runVirtAnim()">Animar traducción</button> para ver la ruta: lógica (guest) $\rightarrow$ physGuest $\rightarrow$ physHost.</div>
           </div>
         </div>
       </section>
@@ -275,16 +362,157 @@
 
 <script>
 /* -------------------------
-   Interacciones y animaciones
+   Funciones de Interacción y Animaciones para AMBOS BLOQUES
    ------------------------- */
 
 function q(id){return document.getElementById(id)}
 
+/* -------------------------------------
+   BLOQUE 1: TRADUCCIÓN DE DIRECCIONES
+   ------------------------------------- */
+const PAGE_SIZE = 256; // 2^8
+// Tabla de páginas de ejemplo: {página_lógica: marco_físico}
+const PAGE_TABLE = {
+  0: 3, 1: 1, 2: 8, 3: 2, 4: 5, 5: 10, 6: 4, 7: 7, 8: 6, 9: 0, 10: 9
+};
+
+function traducirDireccion(){
+  const logAddrInput = q('logAddr').value;
+  const logAddr = parseInt(logAddrInput);
+  const output = q('traduccionResultado');
+  
+  if (isNaN(logAddr) || logAddr < 0 || logAddr > 65535) {
+    output.innerHTML = `<span style="color:var(--danger);">Error: Dirección inválida. Ingrese un número entre 0 y 65535.</span>`;
+    return;
+  }
+  
+  const pageNumber = Math.floor(logAddr / PAGE_SIZE);
+  const offset = logAddr % PAGE_SIZE;
+  
+  let resultHTML = `<div style="color:var(--accent2);font-weight:600;">Dirección Lógica: ${logAddr} (0x${logAddr.toString(16).toUpperCase()})</div>`;
+  resultHTML += `<hr style="border:0;border-top:1px solid rgba(255,255,255,0.05);margin:6px 0;">`;
+  
+  resultHTML += `Paso 1: Calcular Página y Offset:<br>`;
+  resultHTML += `Página (P) = ${logAddr} / ${PAGE_SIZE} = <strong>${pageNumber}</strong><br>`;
+  resultHTML += `Offset (O) = ${logAddr} % ${PAGE_SIZE} = <strong>${offset}</strong><br><br>`;
+  
+  if (PAGE_TABLE[pageNumber] !== undefined) {
+    const frameNumber = PAGE_TABLE[pageNumber];
+    
+    // Calcular Dirección Física
+    const physAddr = (frameNumber * PAGE_SIZE) + offset;
+    
+    resultHTML += `Paso 2: Buscar en la Tabla de Páginas:<br>`;
+    resultHTML += `Página ${pageNumber} mapea al Marco (F): <strong>${frameNumber}</strong><br><br>`;
+    
+    resultHTML += `<div style="color:var(--accent);font-weight:600;">Dirección Física = (F * ${PAGE_SIZE}) + O</div>`;
+    resultHTML += `<div style="color:var(--accent);font-weight:600;">Dirección Física = (${frameNumber} * ${PAGE_SIZE}) + ${offset} = <strong>${physAddr}</strong> (0x${physAddr.toString(16).toUpperCase()})</div>`;
+    
+  } else {
+    resultHTML = `<div style="color:var(--danger);">¡FALLO DE PÁGINA (PAGE FAULT)!</div>`;
+    resultHTML += `La página lógica ${pageNumber} no se encuentra cargada en la memoria física.`;
+  }
+  
+  output.innerHTML = resultHTML;
+}
+
+/* -------------------------------------
+   BLOQUE 1: ALGORITMOS DE REEMPLAZO
+   ------------------------------------- */
+
+// Implementación simple de FIFO
+function simulateFIFO(sequence, frames) {
+  const memory = [];
+  let faults = 0;
+  let nextToReplace = 0; // Índice del marco más antiguo
+  
+  for (const page of sequence) {
+    let hit = memory.includes(page);
+    if (!hit) {
+      faults++;
+      if (memory.length < frames) {
+        memory.push(page);
+      } else {
+        memory[nextToReplace] = page;
+        nextToReplace = (nextToReplace + 1) % frames;
+      }
+    }
+  }
+  return faults;
+}
+
+// Implementación simple de LRU
+function simulateLRU(sequence, frames) {
+  const memory = [];
+  let faults = 0;
+  
+  for (const page of sequence) {
+    let index = memory.indexOf(page);
+    if (index === -1) {
+      faults++;
+      if (memory.length < frames) {
+        memory.push(page);
+      } else {
+        memory.shift(); // LRU: Elimina el elemento menos usado (el primero en el array)
+        memory.push(page);
+      }
+    } else {
+      // Hit: Mueve la página usada al final (más reciente)
+      memory.splice(index, 1);
+      memory.push(page);
+    }
+  }
+  return faults;
+}
+
+function simularReemplazo() {
+  const seqStr = q('refSeq').value;
+  const frames = parseInt(q('frameCount').value);
+  const output = q('simuladorOutput');
+  
+  const sequence = seqStr.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+  
+  if (sequence.length === 0 || frames < 3 || frames > 5) {
+    output.innerHTML = `<span style="color:var(--danger);">Error: Secuencia inválida o número de marcos (3-5) incorrecto.</span>`;
+    return;
+  }
+  
+  const faultsFIFO = simulateFIFO(sequence, frames);
+  const faultsLRU = simulateLRU(sequence, frames);
+
+  let resultHTML = `<div style="color:var(--accent2);font-weight:600;">Secuencia: ${sequence.join(', ')} (${frames} Marcos)</div><br>`;
+  
+  resultHTML += `<div style="color:var(--accent);font-weight:600;">FIFO (First In, First Out)</div>`;
+  resultHTML += `Fallos de Página: <strong>${faultsFIFO}</strong> / ${sequence.length}<br><br>`;
+  
+  resultHTML += `<div style="color:var(--accent);font-weight:600;">LRU (Least Recently Used)</div>`;
+  resultHTML += `Fallos de Página: <strong>${faultsLRU}</strong> / ${sequence.length}<br><br>`;
+
+  if (faultsLRU < faultsFIFO) {
+    resultHTML += `<div style="color:var(--ok);">Conclusión: LRU (${faultsLRU} fallos) es MÁS eficiente que FIFO (${faultsFIFO} fallos) para esta secuencia.</div>`;
+  } else if (faultsLRU === faultsFIFO) {
+    resultHTML += `<div style="color:var(--muted);">Conclusión: Ambos algoritmos tuvieron el mismo rendimiento (${faultsLRU} fallos).</div>`;
+  } else {
+     resultHTML += `<div style="color:var(--danger);">Conclusión: FIFO (${faultsFIFO} fallos) es MÁS eficiente que LRU (${faultsLRU} fallos) para esta secuencia.</div>`;
+  }
+
+  output.innerHTML = resultHTML;
+}
+
+
+/* -------------------------------------
+   BLOQUE 2: FUNCIONES DE INVESTIGACIÓN
+   ------------------------------------- */
+
 /* Overcommit visual controls */
 const host = q('hostMem'), vms = q('vmCount');
 const hostVal = q('hostMemVal'), vmVal = q('vmCountVal'), ocVal = q('overcommitVal');
-host.oninput = ()=> hostVal.textContent = host.value + ' MB';
-vms.oninput = ()=> vmVal.textContent = vms.value + ' VMs';
+// Se necesita verificar si los elementos existen (solo en Bloque 2)
+if (host && vms) {
+    host.oninput = ()=> hostVal.textContent = host.value + ' MB';
+    vms.oninput = ()=> vmVal.textContent = vms.value + ' VMs';
+}
+
 function updateOvercommit(){
   const hostMB = parseInt(host.value);
   const vmCount = parseInt(vms.value);
@@ -292,6 +520,8 @@ function updateOvercommit(){
   const totalRequested = vmCount * vmSizeMB;
   const ratio = (totalRequested / hostMB).toFixed(2);
   ocVal.textContent = 'Overcommit ratio: ' + ratio;
+  q('vmsVal').textContent = `VMs: ${vmCount} × ${vmSizeMB} MB`; // Actualiza el texto de las VMs
+  
   // color feedback
   if(ratio <= 1) ocVal.style.color = '#7ee787';
   else if(ratio <= 2) ocVal.style.color = '#ffcf5c';
@@ -416,19 +646,23 @@ function drawFrames(){
   }
 }
 
-/* JS para cerrar el menú en móvil al hacer clic en un enlace */
+/* Inicialización */
 document.addEventListener('DOMContentLoaded', ()=>{
-  updateOvercommit();
-  drawRing();
+  // Solo ejecuta si los elementos existen (Bloque 2)
+  if(q('hostMem') && q('ring') && q('virtSVG')) {
+    updateOvercommit();
+    drawRing();
+    runVirtAnim();
+  }
   
-  // 1. Obtener todos los enlaces del menú
+  // Cierre del menú hamburguesa (CORREGIDO)
   const menuLinks = document.querySelectorAll('.menu-links a');
-  const menuContainer = document.querySelector('.menu-links');
-
-  // 2. Añadir un evento de clic a cada enlace
+  const menuContainer = q('menuLinks'); // Usamos el ID agregado
+  
+  // 1. JS para cerrar el menú en móvil al hacer clic en un enlace
   menuLinks.forEach(link => {
     link.addEventListener('click', () => {
-      // 3. Ocultar el menú al hacer clic (solo si está visible)
+      // Ocultar el menú al hacer clic (solo si está visible)
       if (menuContainer.classList.contains('active')) {
         menuContainer.classList.remove('active');
       }
