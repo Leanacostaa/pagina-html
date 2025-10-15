@@ -26,12 +26,16 @@
   th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.04);text-align:left}
   th{color:var(--accent2);font-weight:600}
   .badge{background:var(--glass);padding:4px 8px;border-radius:8px;font-size:12px;color:var(--muted)}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
   button, select{background:#071422;border:1px solid rgba(255,255,255,0.03);color:var(--text);padding:8px 10px;border-radius:8px;cursor:pointer}
   button.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0;color:#022026}
   .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;background:rgba(255,255,255,0.02);padding:6px;border-radius:6px}
+  .row{display:flex;gap:12px;align-items:center}
   footer{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
 
-  @media (max-width:980px){ .grid{grid-template-columns:1fr; } .panel{margin-bottom:12px} }
+  /* small visual components */
+  .mem-visual{height:28px;border-radius:6px;overflow:hidden;background:#051018;border:1px solid rgba(255,255,255,0.03)}
+  .block{height:100%;display:inline-block;vertical-align:top}
 
   /* === Menú de navegación === */
   nav{position:fixed;top:0;left:0;width:100%;background:#0b1220cc;backdrop-filter:blur(8px);z-index:999;
@@ -41,9 +45,18 @@
   nav a:hover{color:var(--accent2);}
   .menu-btn{display:none;flex-direction:column;gap:4px;cursor:pointer;}
   .menu-btn div{width:22px;height:2px;background:var(--text);}
+  
+  /* Media Query: Aplica estilos solo en pantallas pequeñas (móviles) */
+  @media (max-width:980px){ .grid{grid-template-columns:1fr; } .panel{margin-bottom:12px} }
+
   @media (max-width:700px){
-    .menu-links{display:none;flex-direction:column;gap:10px;position:absolute;top:50px;left:0;width:100%;
-      background:#0b1220ee;padding:10px;}
+    /* OCULTA el menú por defecto en móvil */
+    .menu-links{
+      display:none; 
+      flex-direction:column;gap:10px;position:absolute;top:50px;left:0;width:100%;
+      background:#0b1220ee;padding:10px;
+    }
+    /* MUESTRA el menú cuando tiene la clase 'active' */
     .menu-links.active{display:flex;}
     .menu-btn{display:flex;}
   }
@@ -55,7 +68,6 @@
 </head>
 
 <body>
-<!-- ==== MENÚ SUPERIOR ==== -->
 <nav>
   <div class="menu-btn" onclick="document.querySelector('.menu-links').classList.toggle('active')">
     <div></div><div></div><div></div>
@@ -66,66 +78,11 @@
     <a href="#es">E/S</a>
     <a href="#buffers">Buffers</a>
     <a href="#drivers">Drivers</a>
-    <a href="#overcommit">Overcommit</a>
+    <a href="#overcommit-section">Overcommit</a>
   </div>
 </nav>
 
 <div class="wrap" style="margin-top:60px">
- <!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Resumen Interactivo - Conceptos de Sistemas Operativos</title>
-<style>
-  :root{
-    --bg:#0f1720; --card:#0b1220; --muted:#9aa7b2; --accent:#2dd4bf; --accent2:#60a5fa; --text:#e6eef3;
-    --danger:#ff7b7b; --ok:#7ee787;
-    --glass: rgba(255,255,255,0.03);
-    font-family: Inter, Roboto, "Segoe UI", Arial, sans-serif;
-  }
-  html,body{height:100%; margin:0; background:linear-gradient(180deg,#071028 0%, #071220 100%); color:var(--text);}
-  .wrap{max-width:1200px;margin:24px auto;padding:20px;}
-  header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
-  h1{font-size:20px;margin:0}
-  p.lead{margin:0;color:var(--muted);font-size:13px}
-
-  .grid{display:grid;grid-template-columns:1fr 380px;gap:18px}
-  .panel{background:var(--card);padding:14px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.45)}
-  .small{font-size:13px;color:var(--muted)}
-  .section-title{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-  .section-title h2{font-size:16px;margin:0}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.04);text-align:left}
-  th{color:var(--accent2);font-weight:600}
-  .badge{background:var(--glass);padding:4px 8px;border-radius:8px;font-size:12px;color:var(--muted)}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-  button, select{background:#071422;border:1px solid rgba(255,255,255,0.03);color:var(--text);padding:8px 10px;border-radius:8px;cursor:pointer}
-  button.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0;color:#022026}
-  .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;background:rgba(255,255,255,0.02);padding:6px;border-radius:6px}
-  .row{display:flex;gap:12px;align-items:center}
-  .accordion{margin-top:8px}
-  .acc-item{border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);margin-bottom:8px}
-  .acc-head{background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);padding:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-  .acc-body{padding:12px;display:none;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
-  .kbd{background:#051018;padding:4px 6px;border-radius:6px;font-size:13px;color:var(--muted)}
-  footer{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
-
-  /* small visual components */
-  .mem-visual{height:28px;border-radius:6px;overflow:hidden;background:#051018;border:1px solid rgba(255,255,255,0.03)}
-  .block{height:100%;display:inline-block;vertical-align:top}
-  .free{background:#133e2b}
-  .proc{background:#2a9d8f}
-  .proc2{background:#60a5fa}
-  .proc3{background:#f59e0b}
-  .legend{display:flex;gap:10px;margin-top:6px;font-size:13px}
-
-  /* responsive */
-  @media (max-width:980px){ .grid{grid-template-columns:1fr; } .panel{margin-bottom:12px} }
-</style>
-</head>
-<body>
-<div class="wrap">
   <header>
     <div>
       <h1>Resumen interactivo — Conceptos de Sistemas Operativos</h1>
@@ -137,10 +94,8 @@
   </header>
 
   <div class="grid">
-    <!-- Main content -->
     <main>
-      <!-- Section: Contenedores vs VM -->
-      <section class="panel">
+      <section id="contenedores" class="panel">
         <div class="section-title"><h2>Contenedores vs Máquinas Virtuales (memoria)</h2></div>
         <p class="small">Resumen corto: los <strong>contenedores</strong> comparten el kernel del host y usan la <em>memoria virtual del host</em>. Las máquinas virtuales (VMs) ejecutan su propio kernel y tienen su propia memoria virtual que debe ser mapeada al hardware físico por el hipervisor.</p>
 
@@ -175,11 +130,9 @@
         </div>
       </section>
 
-      <!-- Section: Pag. y EPT/SPT -->
-      <section class="panel" style="margin-top:12px">
+      <section id="hipervisores" class="panel" style="margin-top:12px">
         <div class="section-title"><h2>Hipervisores — traducción de direcciones (SPT vs EPT)</h2></div>
         <p class="small">En virtualización hay <strong>dos</strong> niveles de paginación: la del SO invitado (guest) y la del hipervisor (host). Traducir la dirección lógica del proceso invitado hasta la dirección física real implica combinar o acelerar ambas traducciones.</p>
-
         <div style="display:flex;gap:12px;flex-wrap:wrap">
           <div style="flex:1">
             <table>
@@ -198,8 +151,7 @@
         </div>
       </section>
 
-      <!-- Section: E/S - polling vs interrupciones -->
-      <section class="panel" style="margin-top:12px">
+      <section id="es" class="panel" style="margin-top:12px">
         <div class="section-title"><h2>E/S: Programada (polling) vs Interrupciones</h2></div>
         <div style="display:flex;gap:12px">
           <div style="flex:1">
@@ -226,8 +178,7 @@
         </div>
       </section>
 
-      <!-- Section: Buffers -->
-      <section class="panel" style="margin-top:12px">
+      <section id="buffers" class="panel" style="margin-top:12px">
         <div class="section-title"><h2>Buffers: simple, doble y circular</h2></div>
         <div style="display:flex;gap:12px;align-items:center">
           <div style="flex:1">
@@ -248,8 +199,7 @@
         </div>
       </section>
 
-      <!-- Section: Drivers reales -->
-      <section class="panel" style="margin-top:12px">
+      <section id="drivers" class="panel" style="margin-top:12px">
         <div class="section-title"><h2>Ejemplos reales de drivers (resumen)</h2></div>
         <ul class="small">
           <li><strong>Controlador de red (NIC)</strong> — ej. <em>e1000</em> en Linux: manejo IRQ, rx/tx queues, DMA y zero-copy.</li>
@@ -260,8 +210,7 @@
         <p class="small">Estos ejemplos se encuentran descritos y ejemplificados en libros como Tanenbaum, Stallings y Silberschatz y en documentación de Linux (drivers/).</p>
       </section>
 
-      <!-- Section: Overcommit -->
-      <section class="panel" style="margin-top:12px">
+      <section id="overcommit-section" class="panel" style="margin-top:12px">
         <div class="section-title"><h2>Overcommit y riesgos operacionales</h2></div>
         <p class="small">Overcommit = asignar más memoria virtual que memoria física disponible, confiando en que no todo será usado al mismo tiempo. Riesgos: swapping intenso, latencia alta, OOM (Out-Of-Memory).</p>
         <table>
@@ -276,7 +225,6 @@
 
     </main>
 
-    <!-- Sidebar -->
     <aside>
       <div class="panel" style="margin-bottom:12px">
         <div class="section-title"><h2>Atajos</h2></div>
@@ -316,7 +264,14 @@
   </div>
 
   <footer class="small">Hecho para estudio: contenedores vs VM, E/S (polling/IRQ/DMA), buffers, drivers reales, hipervisores y overcommit. Guarda este archivo para referencia offline.</footer>
+  
+  <div class="qr-container">
+    <p>Escaneá este código para abrir la página:</p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://tu-pagina-ejemplo.com" alt="QR code">
+  </div>
+
 </div>
+
 
 <script>
 /* -------------------------
@@ -461,27 +416,25 @@ function drawFrames(){
   }
 }
 
-/* init small visuals */
+/* JS para cerrar el menú en móvil al hacer clic en un enlace */
 document.addEventListener('DOMContentLoaded', ()=>{
   updateOvercommit();
   drawRing();
+  
+  // 1. Obtener todos los enlaces del menú
+  const menuLinks = document.querySelectorAll('.menu-links a');
+  const menuContainer = document.querySelector('.menu-links');
+
+  // 2. Añadir un evento de clic a cada enlace
+  menuLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      // 3. Ocultar el menú al hacer clic (solo si está visible)
+      if (menuContainer.classList.contains('active')) {
+        menuContainer.classList.remove('active');
+      }
+    });
+  });
 });
-</script>
-</body>
-</html>
-
-
-  </section>
-
-  <!-- al final de TODO el contenido -->
-  <div class="qr-container">
-    <p>Escaneá este código para abrir la página:</p>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://tu-pagina-ejemplo.com" alt="QR code">
-  </div>
-</div>
-
-<script>
-/* mantiene el menú responsive funcional */
 </script>
 </body>
 </html>
