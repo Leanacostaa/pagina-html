@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Concesionaria - Inicio</title>
+</head>
+<body>
+
+    <!-- Barra de navegación superior -->
+    <header>
+        <div>
+            <span>Cátedra Paradigmas 3</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="listado_tabla.html">Vista Tabla</a></li>
+                <li><a href="listado_box.html">Vista Tarjetas</a></li>
+                <li><a href="comprar.html">Comprar</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Contenido principal con la estructura de tarjeta blanca -->
+    <main>
+        <section>
+            <h1>Bienvenidos al Catálogo Formativo</h1>
+            <hr>
+            <p>
+                Este sitio web representa el "modelo" que desarrollaremos en el aula para dominar HTML y CSS utilizando tradicional sin frameworks móviles. En las siguientes páginas, analizaremos cómo estructurar datos tabulares, diseñar grillas de tarjetas flexibles, mostrar fichas técnicas individuales e implementar formularios transaccionales.
+            </p>
+            
+            <!-- Imagen central -->
+            <div>
+                <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80" alt="Planificación y diseño">
+            </div>
+        </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>&copy; 2026 - Concesionaria - Todos los derechos reservados</p>
+    </footer>
+
+</body>
+</html>
