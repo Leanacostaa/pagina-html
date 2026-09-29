@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ta-Te-Ti con Arrays</title>
+<style>
+  body {
+    background-color: #f4f7f2;
+    color: #16281C;
+    font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  h1 { margin-bottom: 0.5rem; }
+  #status { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 8px;
+    background-color: #d2dcd0;
+    padding: 8px;
+    border-radius: 12px;
+  }
+
+  .cell {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 2.5rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cell:hover { background-color: #edf4eb; }
+
+  #restart {
+    margin-top: 1.5rem;
+    background: #E8A93B;
+    color: #16281C;
+    border: none;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+  <h1>Ta-Te-Ti (Lógica de Arrays)</h1>
+  <div id="status">Turno de: X</div>
+
+  <div class="board" id="board"></div>
+
+  <button id="restart">Reiniciar</button>
+
+  <script>
+    // 1. Array principal que modela el estado del tablero (9 posiciones)
+    let tablero = ["", "", "", "", "", "", "", "", ""];
+    let turno = "X";
+    let juegoActivo = true;
+
+    // Combinaciones ganadoras posibles utilizando índices del array
+    const combinacionesGanadoras = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // Filas
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columnas
+      [0, 4, 8], [2, 4, 6]            // Diagonales
+    ];
+
+    const boardElement = document.getElementById("board");
+    const statusElement = document.getElementById("status");
+    const restartButton = document.getElementById("restart");
+
+    // 2. Renderizar el tablero dinámicamente recorriendo el array
+    function renderizarTablero() {
+      boardElement.innerHTML = "";
+      tablero.forEach((valor, index) => {
+        const celda = document.createElement("button");
+        celda.classList.add("cell");
+        celda.textContent = valor;
+        
+        // Evento desacoplado para escuchar la jugada en la posición del array
+        celda.addEventListener("click", () => ejecutarJugada(index));
+        boardElement.appendChild(celda);
+      });
+    }
+
+    // 3. Lógica de la jugada mutando el array
+    function ejecutarJugada(index) {
+      if (!juegoActivo || tablero[index] !== "") return;
+
+      // Actualizamos el array de estado
+      tablero[index] = turno;
+      
+      verificarEstadoJuego();
+      renderizarTablero();
+    }
+
+    // 4. Evaluar condiciones ganadoras sobre el array
+    function verificarEstadoJuego() {
+      let ganado = false;
+
+      for (let i = 0; i < combinacionesGanadoras.length; i++) {
+        const [a, b, c] = combinacionesGanadoras[i];
+        if (tablero[a] && tablero[a] === tablero[b] && tablero[a] === tablero[c]) {
+          ganado = true;
+          break;
+        }
+      }
+
+      if (ganado) {
+        statusElement.textContent = `¡Ganó el jugador ${turno}! 🎉`;
+        juegoActivo = false;
+        return;
+      }
+
+      // Validar empate si el array ya no contiene strings vacíos
+      if (!tablero.includes("")) {
+        statusElement.textContent = "¡Empate! 🤝";
+        juegoActivo = false;
+        return;
+      }
+
+      // Alternar turno
+      turno = turno === "X" ? "O" : "X";
+      statusElement.textContent = `Turno de: ${turno}`;
+    }
+
+    // Reiniciar valores del array
+    restartButton.addEventListener("click", () => {
+      tablero = ["", "", "", "", "", "", "", "", ""];
+      turno = "X";
+      juegoActivo = true;
+      statusElement.textContent = `Turno de: ${turno}`;
+      renderizarTablero();
+    });
+
+    // Carga inicial
+    renderizarTablero();
+  </script>
+
+</body>
+</html>
