@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de inventario — Mercado Fresco</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Encabezado: agrupa la barra de contacto/horario y la navegación principal -->
+<header>
+  <div class="topbar">
+    <div class="container">
+      <span>Retiro en el local o envío a domicilio en el día</span>
+      <span>Lun a Sáb 8:00–21:00 · San Martín 452</span>
+    </div>
+  </div>
+
+  <nav class="nav">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="34" height="34" rx="4" fill="#16281C"/>
+        <path d="M9 13h16l-1.6 10.4a2 2 0 0 1-2 1.6H12.6a2 2 0 0 1-2-1.6L9 13Z" stroke="#E8A93B" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M13 13v-1.5a4 4 0 0 1 8 0V13" stroke="#E8A93B" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span>Mercado Fresco<small>ALMACÉN DE BARRIO</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="listado_tabla.html">Productos (tabla)</a>
+      <a href="listado_box.html">Productos (grilla)</a>
+      <a href="producto.html">Ficha de producto</a>
+    </nav>
+    <a href="comprar.html" class="nav-cta">Ir a comprar <span class="cart-badge" data-cart-count>0</span></a>
+  </div>
+  </nav>
+</header>
+
+<section class="section container">
+  <div class="section-head">
+    <div>
+      <span class="internal-tag">Panel interno · uso del personal</span>
+      <h2>Monitor de inventario</h2>
+      <p>
+        Consulta en vivo del stock del local y alerta automática cuando un producto
+        cae por debajo de su umbral crítico. Esta pantalla no forma parte del sitio
+        de cara al cliente — ver la nota de diseño (VSDM) al final de la página.
+      </p>
+    </div>
+    <button type="button" id="btn-refrescar" class="btn btn-outline">↻ Refrescar</button>
+  </div>
+
+  <!-- Selector de rol: demuestra VSDM (Vista Cliente vs. Vista Empleado) sobre el mismo panel -->
+  <div class="role-switch">
+    <label for="selector-rol">Ver panel como:</label>
+    <select id="selector-rol">
+      <option value="cliente">Cliente</option>
+      <option value="empleado" selected>Empleado</option>
+    </select>
+    <span id="rol-explicacion" class="role-note"></span>
+  </div>
+
+  <p id="estado-carga" class="loading-note">Consultando stock…</p>
+
+  <!-- Banner de alerta: se muestra solo si hay productos por debajo del umbral -->
+  <div id="banner-critico" class="alert-banner" style="display:none;">
+    <span class="alert-banner-icon">⚠</span>
+    <span id="banner-critico-texto">Hay productos por debajo del umbral de stock.</span>
+  </div>
+
+  <div class="summary-strip">
+    <div><span id="resumen-total">0</span><small>Productos monitoreados</small></div>
+    <div><span id="resumen-criticos">0</span><small>En estado crítico</small></div>
+  </div>
+
+  <div class="filter-row">
+    <input type="text" id="buscador" placeholder="Buscar producto…">
+    <select id="filtro-categoria">
+      <option value="todas">Todas las categorías</option>
+      <option value="Frutas y verduras">Frutas y verduras</option>
+      <option value="Lácteos">Lácteos</option>
+      <option value="Carnicería">Carnicería</option>
+      <option value="Panadería">Panadería</option>
+      <option value="Limpieza">Limpieza</option>
+      <option value="Bebidas">Bebidas</option>
+      <option value="Almacén">Almacén</option>
+      <option value="Kiosco">Kiosco</option>
+    </select>
+  </div>
+
+  <!-- overflow-x: auto en .table-wrap permite scroll horizontal en pantallas
+       angostas sin romper el layout general (mismo criterio que en listado_tabla.html) -->
+  <div class="table-wrap">
+    <table class="products">
+      <caption>Stock actual por producto · se actualiza al presionar "Refrescar"</caption>
+      <thead>
+        <tr>
+          <th scope="col">Producto</th>
+          <th scope="col">Categoría</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Umbral crítico</th>
+          <th scope="col">Estado</th>
+          <th scope="col" class="col-empleado">Ajustar stock</th>
+        </tr>
+      </thead>
+      <tbody id="cuerpo-inventario">
+        <!-- Filas generadas dinámicamente por app.js a partir de stock.json -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="methodology-note">
+    <h3>Nota de diseño: VSDM (Vistas separadas por rol de acceso)</h3>
+    <p>
+      Este panel aplica el modelo <strong>VSDM</strong> de la Unidad 1: la misma pantalla
+      expone dos vistas distintas según el rol de quien la usa. En la <strong>vista Cliente</strong>
+      solo se informa si un producto está disponible o no, sin exponer cantidades exactas
+      ni controles de stock. En la <strong>vista Empleado</strong> se muestran las cantidades
+      reales, el umbral configurado y los controles para ajustar el inventario.
+    </p>
+    <p>
+      La separación se resuelve del lado del cliente (con <code>classList.toggle</code> sobre
+      <code>&lt;body&gt;</code> y CSS) a modo de demostración conceptual del modelo de vistas;
+      no reemplaza un control de acceso real, que en una versión con backend requeriría
+      autenticación y autorización en el servidor.
+    </p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div>
+      <h4>Mercado Fresco</h4>
+      <p>Almacén de barrio con envío a domicilio. Productos frescos elegidos todos los días.</p>
+    </div>
+    <div>
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="listado_tabla.html">Productos en tabla</a></li>
+        <li><a href="listado_box.html">Productos en grilla</a></li>
+        <li><a href="comprar.html">Comprar</a></li>
+        <li><a href="inventario.html">Panel de inventario (interno)</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>San Martín 452, Posadas</li>
+        <li>(0376) 444-2210</li>
+        <li>hola@mercadofresco.com.ar</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container bottom">
+    Trabajo práctico académico — Paradigmas y Lenguajes de Programación III.
+  </div>
+</footer>
+
+<!-- products.js/cart.js: mismo carrito del sitio (badge del header).
+     app.js: lógica propia de este panel (fetch a stock.json + addEventListener) -->
+<script src="products.js"></script>
+<script src="cart.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

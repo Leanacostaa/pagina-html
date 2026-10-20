@@ -1,0 +1,178 @@
+[
+  {
+    "id": "tomate-perita",
+    "name": "Tomate perita",
+    "category": "Frutas y verduras",
+    "categorySlug": "frutas-verduras",
+    "price": 1850,
+    "unit": "kg",
+    "emoji": "🍅",
+    "discount": true,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "papa-negra",
+    "name": "Papa negra",
+    "category": "Frutas y verduras",
+    "categorySlug": "frutas-verduras",
+    "price": 980,
+    "unit": "kg",
+    "emoji": "🥔",
+    "discount": false,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "banana-ecuatoriana",
+    "name": "Banana ecuatoriana",
+    "category": "Frutas y verduras",
+    "categorySlug": "frutas-verduras",
+    "price": 1320,
+    "unit": "kg",
+    "emoji": "🍌",
+    "discount": false,
+    "stockLevel": "low"
+  },
+  {
+    "id": "leche-entera",
+    "name": "Leche entera La Serrana",
+    "category": "Lácteos",
+    "categorySlug": "lacteos",
+    "price": 1150,
+    "unit": "un.",
+    "emoji": "🥛",
+    "discount": false,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "queso-cremoso",
+    "name": "Queso cremoso",
+    "category": "Lácteos",
+    "categorySlug": "lacteos",
+    "price": 4200,
+    "unit": "un.",
+    "emoji": "🧀",
+    "discount": false,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "yogur-frutilla",
+    "name": "Yogur bebible frutilla",
+    "category": "Lácteos",
+    "categorySlug": "lacteos",
+    "price": 1680,
+    "unit": "un.",
+    "emoji": "🍓",
+    "discount": false,
+    "stockLevel": "low"
+  },
+  {
+    "id": "bife-chorizo",
+    "name": "Bife de chorizo",
+    "category": "Carnicería",
+    "categorySlug": "carniceria",
+    "price": 9800,
+    "unit": "kg",
+    "emoji": "🥩",
+    "discount": false,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "milanesa-nalga",
+    "name": "Milanesa de nalga",
+    "category": "Carnicería",
+    "categorySlug": "carniceria",
+    "price": 8100,
+    "unit": "kg",
+    "emoji": "🍖",
+    "discount": false,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "pan-frances",
+    "name": "Pan francés",
+    "category": "Panadería",
+    "categorySlug": "panaderia",
+    "price": 1400,
+    "unit": "kg",
+    "emoji": "🥖",
+    "discount": false,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "facturas-surtidas",
+    "name": "Facturas surtidas",
+    "category": "Panadería",
+    "categorySlug": "panaderia",
+    "price": 3600,
+    "unit": "doc.",
+    "emoji": "🥐",
+    "discount": false,
+    "stockLevel": "low"
+  },
+  {
+    "id": "detergente",
+    "name": "Detergente x 750 ml",
+    "category": "Limpieza",
+    "categorySlug": "limpieza",
+    "price": 2150,
+    "unit": "un.",
+    "emoji": "🧴",
+    "discount": false,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "agua-mineral",
+    "name": "Agua mineral sin gas",
+    "category": "Bebidas",
+    "categorySlug": "bebidas",
+    "price": 1050,
+    "unit": "un.",
+    "emoji": "💧",
+    "discount": false,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "arroz-largo-fino",
+    "name": "Arroz largo fino",
+    "category": "Almacén",
+    "categorySlug": "almacen",
+    "price": 1200,
+    "unit": "kg",
+    "emoji": "🍚",
+    "discount": false,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "aceite-girasol",
+    "name": "Aceite de girasol 1.5L",
+    "category": "Almacén",
+    "categorySlug": "almacen",
+    "price": 2400,
+    "unit": "un.",
+    "emoji": "🫒",
+    "discount": false,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "alfajor-maicena",
+    "name": "Alfajor de maicena",
+    "category": "Kiosco",
+    "categorySlug": "kiosco",
+    "price": 650,
+    "unit": "un.",
+    "emoji": "🍪",
+    "discount": false,
+    "stockLevel": "ok"
+  },
+  {
+    "id": "chocolate-barra",
+    "name": "Chocolate en barra",
+    "category": "Kiosco",
+    "categorySlug": "kiosco",
+    "price": 1800,
+    "unit": "un.",
+    "emoji": "🍫",
+    "discount": false,
+    "stockLevel": "ok"
+  }
+]

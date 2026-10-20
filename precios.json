@@ -1,0 +1,66 @@
+[
+  {
+    "productoId": "tomate-perita",
+    "precioActualizado": 1850
+  },
+  {
+    "productoId": "papa-negra",
+    "precioActualizado": 980
+  },
+  {
+    "productoId": "banana-ecuatoriana",
+    "precioActualizado": 1320
+  },
+  {
+    "productoId": "leche-entera",
+    "precioActualizado": 1150
+  },
+  {
+    "productoId": "queso-cremoso",
+    "precioActualizado": 4200
+  },
+  {
+    "productoId": "yogur-frutilla",
+    "precioActualizado": 1680
+  },
+  {
+    "productoId": "bife-chorizo",
+    "precioActualizado": 9800
+  },
+  {
+    "productoId": "milanesa-nalga",
+    "precioActualizado": 8100
+  },
+  {
+    "productoId": "pan-frances",
+    "precioActualizado": 1400
+  },
+  {
+    "productoId": "facturas-surtidas",
+    "precioActualizado": 3600
+  },
+  {
+    "productoId": "detergente",
+    "precioActualizado": 2150
+  },
+  {
+    "productoId": "agua-mineral",
+    "precioActualizado": 1050
+  },
+  {
+    "productoId": "arroz-largo-fino",
+    "precioActualizado": 1200
+  },
+  {
+    "productoId": "aceite-girasol",
+    "precioActualizado": 2400
+  },
+  {
+    "productoId": "alfajor-maicena",
+    "precioActualizado": 650
+  },
+  {
+    "productoId": "chocolate-barra",
+    "precioActualizado": 1800
+  }
+]

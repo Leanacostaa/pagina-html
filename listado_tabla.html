@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo en tabla — Mercado Fresco</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Encabezado: agrupa la barra de contacto/horario y la navegación principal -->
+<header>
+  <div class="topbar">
+    <div class="container">
+      <span>Retiro en el local o envío a domicilio en el día</span>
+      <span>Lun a Sáb 8:00–21:00 · San Martín 452</span>
+    </div>
+  </div>
+
+  <nav class="nav">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="34" height="34" rx="4" fill="#16281C"/>
+        <path d="M9 13h16l-1.6 10.4a2 2 0 0 1-2 1.6H12.6a2 2 0 0 1-2-1.6L9 13Z" stroke="#E8A93B" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M13 13v-1.5a4 4 0 0 1 8 0V13" stroke="#E8A93B" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span>Mercado Fresco<small>ALMACÉN DE BARRIO</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="listado_tabla.html" aria-current="page">Productos (tabla)</a>
+      <a href="listado_box.html">Productos (grilla)</a>
+      <a href="producto.html">Ficha de producto</a>
+    </nav>
+    <a href="comprar.html" class="nav-cta">Ir a comprar <span class="cart-badge" data-cart-count>0</span></a>
+  </div>
+  </nav>
+</header>
+
+<!-- Selector de vista (Tabla/Grilla) + cabecera dinámica según filtro -->
+<section class="section container">
+  <div class="section-head">
+    <div>
+      <h2 id="catalog-title">Catálogo completo</h2>
+      <p id="catalog-desc">Todos los productos disponibles, con precio, unidad de venta y stock actual en el local.</p>
+    </div>
+    <div class="view-toggle">
+      <a href="listado_tabla.html" aria-current="page" id="toggle-tabla">Tabla</a>
+      <a href="listado_box.html" id="toggle-box">Grilla</a>
+    </div>
+  </div>
+
+  <!-- Buscador en tiempo real: filtra las filas ya renderizadas usando el
+       catálogo consultado de forma asíncrona (ver catalogo-filtro.js) -->
+  <div class="filter-row">
+    <input type="text" id="buscador-catalogo" placeholder="Buscar producto…">
+  </div>
+
+  <!-- overflow-x: auto en .table-wrap permite hacer scroll horizontal
+     de la tabla en pantallas angostas, sin romper el layout general -->
+<div class="table-wrap">
+    <table class="products">
+      <caption id="catalog-caption">16 productos encontrados · actualizado hoy 09:40</caption>
+      <thead>
+        <tr>
+          <th scope="col">Producto</th>
+          <th scope="col">Categoría</th>
+          <th scope="col">Unidad</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Stock</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-cat="frutas-verduras" data-discount="true" data-id="tomate-perita">
+          <td><strong><a href="producto.html?id=tomate-perita">Tomate perita</a></strong></td>
+          <td><span class="tag">Frutas y verduras</span></td>
+          <td>Kg</td>
+          <td class="price">$1.850</td>
+          <td class="stock-ok">42 kg</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="tomate-perita" data-name="Tomate perita" data-price="1850" data-unit="kg" data-emoji="🍅">Agregar</button></td>
+        </tr>
+        <tr data-cat="frutas-verduras" data-discount="false" data-id="papa-negra">
+          <td><strong><a href="producto.html?id=papa-negra">Papa negra</a></strong></td>
+          <td><span class="tag">Frutas y verduras</span></td>
+          <td>Kg</td>
+          <td class="price">$980</td>
+          <td class="stock-ok">120 kg</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="papa-negra" data-name="Papa negra" data-price="980" data-unit="kg" data-emoji="🥔">Agregar</button></td>
+        </tr>
+        <tr data-cat="frutas-verduras" data-discount="false" data-id="banana-ecuatoriana">
+          <td><strong><a href="producto.html?id=banana-ecuatoriana">Banana ecuatoriana</a></strong></td>
+          <td><span class="tag">Frutas y verduras</span></td>
+          <td>Kg</td>
+          <td class="price">$1.320</td>
+          <td class="stock-low">6 kg</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="banana-ecuatoriana" data-name="Banana ecuatoriana" data-price="1320" data-unit="kg" data-emoji="🍌">Agregar</button></td>
+        </tr>
+        <tr data-cat="lacteos" data-discount="false" data-id="leche-entera">
+          <td><strong><a href="producto.html?id=leche-entera">Leche entera La Serrana</a></strong></td>
+          <td><span class="tag">Lácteos</span></td>
+          <td>Sachet 1 L</td>
+          <td class="price">$1.150</td>
+          <td class="stock-ok">88 un.</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="leche-entera" data-name="Leche entera La Serrana" data-price="1150" data-unit="un." data-emoji="🥛">Agregar</button></td>
+        </tr>
+        <tr data-cat="lacteos" data-discount="false" data-id="queso-cremoso">
+          <td><strong><a href="producto.html?id=queso-cremoso">Queso cremoso</a></strong></td>
+          <td><span class="tag">Lácteos</span></td>
+          <td>Bolsa 500 g</td>
+          <td class="price">$4.200</td>
+          <td class="stock-ok">30 un.</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="queso-cremoso" data-name="Queso cremoso" data-price="4200" data-unit="un." data-emoji="🧀">Agregar</button></td>
+        </tr>
+        <tr data-cat="lacteos" data-discount="false" data-id="yogur-frutilla">
+          <td><strong><a href="producto.html?id=yogur-frutilla">Yogur bebible frutilla</a></strong></td>
+          <td><span class="tag">Lácteos</span></td>
+          <td>Botella 1 L</td>
+          <td class="price">$1.680</td>
+          <td class="stock-low">4 un.</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="yogur-frutilla" data-name="Yogur bebible frutilla" data-price="1680" data-unit="un." data-emoji="🍓">Agregar</button></td>
+        </tr>
+        <tr data-cat="carniceria" data-discount="false" data-id="bife-chorizo">
+          <td><strong><a href="producto.html?id=bife-chorizo">Bife de chorizo</a></strong></td>
+          <td><span class="tag">Carnicería</span></td>
+          <td>Kg</td>
+          <td class="price">$9.800</td>
+          <td class="stock-ok">25 kg</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="bife-chorizo" data-name="Bife de chorizo" data-price="9800" data-unit="kg" data-emoji="🥩">Agregar</button></td>
+        </tr>
+        <tr data-cat="carniceria" data-discount="false" data-id="milanesa-nalga">
+          <td><strong><a href="producto.html?id=milanesa-nalga">Milanesa de nalga</a></strong></td>
+          <td><span class="tag">Carnicería</span></td>
+          <td>Kg</td>
+          <td class="price">$8.100</td>
+          <td class="stock-ok">18 kg</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="milanesa-nalga" data-name="Milanesa de nalga" data-price="8100" data-unit="kg" data-emoji="🍖">Agregar</button></td>
+        </tr>
+        <tr data-cat="panaderia" data-discount="false" data-id="pan-frances">
+          <td><strong><a href="producto.html?id=pan-frances">Pan francés</a></strong></td>
+          <td><span class="tag">Panadería</span></td>
+          <td>Kg</td>
+          <td class="price">$1.400</td>
+          <td class="stock-ok">60 kg</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="pan-frances" data-name="Pan francés" data-price="1400" data-unit="kg" data-emoji="🥖">Agregar</button></td>
+        </tr>
+        <tr data-cat="panaderia" data-discount="false" data-id="facturas-surtidas">
+          <td><strong><a href="producto.html?id=facturas-surtidas">Facturas surtidas</a></strong></td>
+          <td><span class="tag">Panadería</span></td>
+          <td>Docena</td>
+          <td class="price">$3.600</td>
+          <td class="stock-low">3 doc.</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="facturas-surtidas" data-name="Facturas surtidas" data-price="3600" data-unit="doc." data-emoji="🥐">Agregar</button></td>
+        </tr>
+        <tr data-cat="limpieza" data-discount="false" data-id="detergente">
+          <td><strong><a href="producto.html?id=detergente">Detergente x 750 ml</a></strong></td>
+          <td><span class="tag">Limpieza</span></td>
+          <td>Unidad</td>
+          <td class="price">$2.150</td>
+          <td class="stock-ok">40 un.</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="detergente" data-name="Detergente x 750 ml" data-price="2150" data-unit="un." data-emoji="🧴">Agregar</button></td>
+        </tr>
+        <tr data-cat="bebidas" data-discount="false" data-id="agua-mineral">
+          <td><strong><a href="producto.html?id=agua-mineral">Agua mineral sin gas</a></strong></td>
+          <td><span class="tag">Bebidas</span></td>
+          <td>Botella 2 L</td>
+          <td class="price">$1.050</td>
+          <td class="stock-ok">75 un.</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="agua-mineral" data-name="Agua mineral sin gas" data-price="1050" data-unit="un." data-emoji="💧">Agregar</button></td>
+        </tr>
+        <tr data-cat="almacen" data-discount="false" data-id="arroz-largo-fino">
+          <td><strong><a href="producto.html?id=arroz-largo-fino">Arroz largo fino</a></strong></td>
+          <td><span class="tag">Almacén</span></td>
+          <td>Kg</td>
+          <td class="price">$1.200</td>
+          <td class="stock-ok">50 kg</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="arroz-largo-fino" data-name="Arroz largo fino" data-price="1200" data-unit="kg" data-emoji="🍚">Agregar</button></td>
+        </tr>
+        <tr data-cat="almacen" data-discount="false" data-id="aceite-girasol">
+          <td><strong><a href="producto.html?id=aceite-girasol">Aceite de girasol 1.5L</a></strong></td>
+          <td><span class="tag">Almacén</span></td>
+          <td>Unidad</td>
+          <td class="price">$2.400</td>
+          <td class="stock-ok">35 un.</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="aceite-girasol" data-name="Aceite de girasol 1.5L" data-price="2400" data-unit="un." data-emoji="🫒">Agregar</button></td>
+        </tr>
+        <tr data-cat="kiosco" data-discount="false" data-id="alfajor-maicena">
+          <td><strong><a href="producto.html?id=alfajor-maicena">Alfajor de maicena</a></strong></td>
+          <td><span class="tag">Kiosco</span></td>
+          <td>Unidad</td>
+          <td class="price">$650</td>
+          <td class="stock-ok">60 un.</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="alfajor-maicena" data-name="Alfajor de maicena" data-price="650" data-unit="un." data-emoji="🍪">Agregar</button></td>
+        </tr>
+        <tr data-cat="kiosco" data-discount="false" data-id="chocolate-barra">
+          <td><strong><a href="producto.html?id=chocolate-barra">Chocolate en barra</a></strong></td>
+          <td><span class="tag">Kiosco</span></td>
+          <td>Unidad</td>
+          <td class="price">$1.800</td>
+          <td class="stock-ok">45 un.</td>
+          <td><button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:.82rem;" data-add-to-cart data-id="chocolate-barra" data-name="Chocolate en barra" data-price="1800" data-unit="un." data-emoji="🍫">Agregar</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Pie de página, igual en las 5 pantallas -->
+<footer class="footer">
+  <div class="container">
+    <div>
+      <h4>Mercado Fresco</h4>
+      <p>Almacén de barrio con envío a domicilio. Productos frescos elegidos todos los días.</p>
+    </div>
+    <div>
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="listado_tabla.html">Productos en tabla</a></li>
+        <li><a href="listado_box.html">Productos en grilla</a></li>
+        <li><a href="comprar.html">Comprar</a></li>
+        <li><a href="inventario.html">Panel de inventario (interno)</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>San Martín 452, Posadas</li>
+        <li>(0376) 444-2210</li>
+        <li>hola@mercadofresco.com.ar</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container bottom">
+    Trabajo práctico académico — Paradigmas y Lenguajes de Programación III.
+  </div>
+</footer>
+
+<!-- Lee ?cat= / ?filter= de la URL para el título de la pantalla.
+     El filtrado de filas (por categoría, oferta y búsqueda en tiempo
+     real) lo hace catalogo-filtro.js, compartido con listado_box.html -->
+<script src="products.js"></script>
+<script src="cart.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const catSlug = params.get('cat');
+  const onlyOffers = params.get('filter') === 'ofertas';
+
+  document.querySelector('#toggle-tabla').href = 'listado_tabla.html' + window.location.search;
+  document.querySelector('#toggle-box').href = 'listado_box.html' + window.location.search;
+
+  if (catSlug) {
+    const cat = window.MercadoCategories.find((c) => c.slug === catSlug);
+    const catName = cat ? cat.name : catSlug;
+    document.querySelector('#catalog-title').textContent = catName;
+    document.querySelector('#catalog-desc').innerHTML =
+      `Mostrando productos de "${catName}". <a href="listado_tabla.html">Ver todo el catálogo</a>.`;
+  } else if (onlyOffers) {
+    document.querySelector('#catalog-title').textContent = 'Ofertas de la semana';
+    document.querySelector('#catalog-desc').innerHTML =
+      'Productos con descuento esta semana. <a href="listado_tabla.html">Ver todo el catálogo</a>.';
+  }
+</script>
+<script src="catalogo-filtro.js"></script>
+</body>
+</html>

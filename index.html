@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercado Fresco — Tu almacén de barrio, online</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Encabezado: agrupa la barra de contacto/horario y la navegación principal -->
+<header>
+  <div class="topbar">
+    <div class="container">
+      <span>Retiro en el local o envío a domicilio en el día</span>
+      <span>Lun a Sáb 8:00–21:00 · San Martín 452</span>
+    </div>
+  </div>
+
+  <nav class="nav">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="34" height="34" rx="4" fill="#16281C"/>
+        <path d="M9 13h16l-1.6 10.4a2 2 0 0 1-2 1.6H12.6a2 2 0 0 1-2-1.6L9 13Z" stroke="#E8A93B" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M13 13v-1.5a4 4 0 0 1 8 0V13" stroke="#E8A93B" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span>Mercado Fresco<small>ALMACÉN DE BARRIO</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" aria-current="page">Inicio</a>
+      <a href="listado_tabla.html">Productos (tabla)</a>
+      <a href="listado_box.html">Productos (grilla)</a>
+      <a href="producto.html">Ficha de producto</a>
+    </nav>
+    <a href="comprar.html" class="nav-cta">Ir a comprar <span class="cart-badge" data-cart-count>0</span></a>
+  </div>
+  </nav>
+</header>
+
+<!-- Sección principal (hero): mensaje de bienvenida y accesos rápidos -->
+<section class="hero">
+  <div class="container">
+    <div>
+      <p class="hero-eyebrow">DESDE 1998 EN EL BARRIO</p>
+      <h1>Lo fresco de la verdulería, con la comodidad de pedirlo online.</h1>
+      <p>Frutas, verduras, almacén, lácteos y bebidas seleccionadas cada mañana. Armá tu pedido y lo tenés en la puerta de tu casa el mismo día.</p>
+      <div class="hero-actions">
+        <a href="listado_box.html" class="btn btn-mustard">Ver catálogo</a>
+        <a href="comprar.html" class="btn btn-outline" style="border-color:#F1F4EC;color:#F1F4EC;">Hacer mi pedido</a>
+      </div>
+    </div>
+    <div class="hero-figure">
+      <div class="tile">🍅</div>
+      <div class="tile">🥬</div>
+      <div class="tile">🧀</div>
+      <div class="tile">🍞</div>
+    </div>
+  </div>
+</section>
+
+<!-- Franja de ofertas de la semana -->
+<section class="offers">
+  <div class="container">
+    <div>
+      <span class="offer-badge">2x1 esta semana</span>
+      <p style="margin:0;color:var(--pine-900);font-weight:700;">Frutas de estación con hasta 20% de descuento pagando en efectivo.</p>
+    </div>
+    <a href="listado_box.html?filter=ofertas" class="btn btn-outline">Ver todas las ofertas</a>
+  </div>
+</section>
+
+<!-- Grilla de categorías: cada una filtra el catálogo por su categoría (?cat=) -->
+<section class="section container">
+  <div class="section-head">
+    <div>
+      <h2>Comprá por rubro</h2>
+      <p>Elegí una categoría para ver el detalle de precios y disponibilidad de stock.</p>
+    </div>
+  </div>
+  <div class="cat-grid">
+    <a class="cat-card" href="listado_box.html?cat=frutas-verduras">
+      <span class="ico">🥕</span>
+      <strong>Frutas y verduras</strong>
+      <span>36 productos</span>
+    </a>
+    <a class="cat-card" href="listado_box.html?cat=lacteos">
+      <span class="ico">🥛</span>
+      <strong>Lácteos</strong>
+      <span>21 productos</span>
+    </a>
+    <a class="cat-card" href="listado_box.html?cat=carniceria">
+      <span class="ico">🥩</span>
+      <strong>Carnicería</strong>
+      <span>14 productos</span>
+    </a>
+    <a class="cat-card" href="listado_box.html?cat=panaderia">
+      <span class="ico">🍞</span>
+      <strong>Panadería</strong>
+      <span>18 productos</span>
+    </a>
+    <a class="cat-card" href="listado_box.html?cat=limpieza">
+      <span class="ico">🧴</span>
+      <strong>Limpieza</strong>
+      <span>27 productos</span>
+    </a>
+    <a class="cat-card" href="listado_box.html?cat=almacen">
+      <span class="ico">🥫</span>
+      <strong>Almacén</strong>
+      <span>52 productos</span>
+    </a>
+    <a class="cat-card" href="listado_box.html?cat=bebidas">
+      <span class="ico">🧃</span>
+      <strong>Bebidas</strong>
+      <span>24 productos</span>
+    </a>
+    <a class="cat-card" href="listado_box.html?cat=kiosco">
+      <span class="ico">🍬</span>
+      <strong>Kiosco</strong>
+      <span>19 productos</span>
+    </a>
+  </div>
+</section>
+
+<!-- Productos destacados (muestra fija, no todo el catálogo) -->
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Los más pedidos esta semana</h2>
+        <p>Una muestra rápida del catálogo. Podés ver el listado completo en tabla o en grilla.</p>
+      </div>
+      <div class="view-toggle">
+        <a href="listado_tabla.html">Tabla</a>
+        <a href="listado_box.html">Grilla</a>
+      </div>
+    </div>
+    <div class="box-grid">
+      <div class="product-card">
+        <div class="thumb"><span class="badge">-15%</span>🍅</div>
+        <div class="body">
+          <span class="cat">Frutas y verduras</span>
+          <h3><a href="producto.html?id=tomate-perita">Tomate perita</a></h3>
+          <span class="unit">Precio por kg</span>
+          <div class="row">
+            <span class="price">$1.850</span>
+            <button type="button" class="btn" data-add-to-cart data-id="tomate-perita" data-name="Tomate perita" data-price="1850" data-unit="kg" data-emoji="🍅">Agregar</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="thumb">🧀</div>
+        <div class="body">
+          <span class="cat">Lácteos</span>
+          <h3><a href="producto.html?id=queso-cremoso">Queso cremoso</a></h3>
+          <span class="unit">Bolsa x 500 g</span>
+          <div class="row">
+            <span class="price">$4.200</span>
+            <button type="button" class="btn" data-add-to-cart data-id="queso-cremoso" data-name="Queso cremoso" data-price="4200" data-unit="un." data-emoji="🧀">Agregar</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="thumb">🍞</div>
+        <div class="body">
+          <span class="cat">Panadería</span>
+          <h3><a href="producto.html?id=pan-frances">Pan francés</a></h3>
+          <span class="unit">Precio por kg</span>
+          <div class="row">
+            <span class="price">$1.400</span>
+            <button type="button" class="btn" data-add-to-cart data-id="pan-frances" data-name="Pan francés" data-price="1400" data-unit="kg" data-emoji="🥖">Agregar</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="thumb">🧴</div>
+        <div class="body">
+          <span class="cat">Limpieza</span>
+          <h3><a href="producto.html?id=detergente">Detergente x 750 ml</a></h3>
+          <span class="unit">Unidad</span>
+          <div class="row">
+            <span class="price">$2.150</span>
+            <button type="button" class="btn" data-add-to-cart data-id="detergente" data-name="Detergente x 750 ml" data-price="2150" data-unit="un." data-emoji="🧴">Agregar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pie de página, igual en las 5 pantallas -->
+<footer class="footer">
+  <div class="container">
+    <div>
+      <h4>Mercado Fresco</h4>
+      <p>Almacén de barrio con envío a domicilio. Productos frescos elegidos todos los días.</p>
+    </div>
+    <div>
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="listado_tabla.html">Productos en tabla</a></li>
+        <li><a href="listado_box.html">Productos en grilla</a></li>
+        <li><a href="comprar.html">Comprar</a></li>
+        <li><a href="inventario.html">Panel de inventario (interno)</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>San Martín 452, Posadas</li>
+        <li>(0376) 444-2210</li>
+        <li>hola@mercadofresco.com.ar</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container bottom">
+    Trabajo práctico académico — Paradigmas y Lenguajes de Programación III.
+  </div>
+</footer>
+
+<!-- Catálogo de datos + lógica del carrito (ver comentarios en cada archivo .js) -->
+<script src="products.js"></script>
+<script src="cart.js"></script>
+</body>
+</html>

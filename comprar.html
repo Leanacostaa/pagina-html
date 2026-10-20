@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finalizar compra — Mercado Fresco</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Encabezado: agrupa la barra de contacto/horario y la navegación principal -->
+<header>
+  <div class="topbar">
+    <div class="container">
+      <span>Retiro en el local o envío a domicilio en el día</span>
+      <span>Lun a Sáb 8:00–21:00 · San Martín 452</span>
+    </div>
+  </div>
+
+  <nav class="nav">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="34" height="34" rx="4" fill="#16281C"/>
+        <path d="M9 13h16l-1.6 10.4a2 2 0 0 1-2 1.6H12.6a2 2 0 0 1-2-1.6L9 13Z" stroke="#E8A93B" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M13 13v-1.5a4 4 0 0 1 8 0V13" stroke="#E8A93B" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span>Mercado Fresco<small>ALMACÉN DE BARRIO</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="listado_tabla.html">Productos (tabla)</a>
+      <a href="listado_box.html">Productos (grilla)</a>
+      <a href="producto.html">Ficha de producto</a>
+    </nav>
+    <a href="comprar.html" class="nav-cta" aria-current="page">Ir a comprar <span class="cart-badge" data-cart-count>0</span></a>
+  </div>
+  </nav>
+</header>
+
+<section class="section container">
+  <div class="section-head">
+    <div>
+      <h2>Finalizar compra</h2>
+      <p>Completá tus datos de contacto y entrega. Revisá el pedido antes de confirmar.</p>
+    </div>
+  </div>
+
+  <div class="checkout-layout">
+    <!-- Formulario de compra: datos de contacto, medio de pago y notas -->
+<div class="form-card" id="form-card">
+      <h2>Datos de compra</h2>
+      <form id="checkout-form" novalidate>
+
+        <!-- Cada input tiene su <label for> asociado por accesibilidad -->
+        <fieldset>
+          <legend>Datos del cliente</legend>
+          <div class="field-grid">
+            <div class="field full">
+              <label for="nombre">Nombre y apellido</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Ej: María Gómez" required>
+              <span class="field-error-msg">Ingresá tu nombre y apellido.</span>
+            </div>
+            <div class="field full">
+              <label for="direccion">Dirección de entrega</label>
+              <input type="text" id="direccion" name="direccion" placeholder="Calle, número, piso/depto" required>
+              <span class="field-error-msg">Ingresá la dirección de entrega.</span>
+            </div>
+            <div class="field">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" name="telefono" placeholder="(0376) 15-000-0000" required>
+              <span class="field-error-msg">Ingresá un teléfono de contacto.</span>
+            </div>
+            <div class="field">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" name="email" placeholder="nombre@correo.com" required>
+              <span class="field-error-msg">Ingresá un e-mail válido.</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Medio de pago</legend>
+          <div class="pay-options">
+            <label class="pay-option">
+              <input type="radio" name="pago" value="efectivo" checked>
+              <div>💵<br>Efectivo</div>
+            </label>
+            <label class="pay-option">
+              <input type="radio" name="pago" value="tarjeta">
+              <div>💳<br>Tarjeta</div>
+            </label>
+            <label class="pay-option">
+              <input type="radio" name="pago" value="transferencia">
+              <div>🏦<br>Transferencia</div>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Notas adicionales</legend>
+          <div class="field full">
+            <label for="notas">Aclaraciones para la entrega <span class="hint">(opcional)</span></label>
+            <textarea id="notas" name="notas" rows="3" placeholder="Ej: dejar el pedido en portería"></textarea>
+          </div>
+        </fieldset>
+
+        <p id="cart-error" class="field-error-msg" style="margin-bottom:14px;">Tu pedido está vacío: agregá al menos un producto antes de confirmar.</p>
+        <button type="submit" class="btn btn-mustard btn-block">Confirmar pedido</button>
+      </form>
+
+      <div id="confirm-panel" class="confirm-panel" style="display:none;">
+        <span class="ico">✅</span>
+        <h2>¡Pedido confirmado!</h2>
+        <p id="confirm-text">Gracias por tu compra. Te contactaremos para coordinar la entrega.</p>
+        <a href="index.html" class="btn btn-mustard">Volver al inicio</a>
+      </div>
+    </div>
+
+    <!-- Resumen del pedido: se arma dinámicamente leyendo el carrito (ver script al final) -->
+<div class="summary-card">
+      <h2>Tu pedido</h2>
+      <ul class="cart-list" id="cart-list"></ul>
+      <p class="cart-empty" id="cart-empty-msg" style="display:none;">Todavía no agregaste productos. Explorá el <a href="listado_box.html">catálogo</a> para armar tu pedido.</p>
+
+      <!-- Código de descuento: capturado, limpiado y validado por validarCupon() en el script -->
+      <div class="coupon-box">
+        <label for="cupon">Código de descuento</label>
+        <div class="coupon-row">
+          <input type="text" id="cupon" placeholder="Ej: UCP10">
+          <button type="button" id="btn-cupon" class="btn btn-outline">Aplicar</button>
+        </div>
+        <p id="mensaje-cupon"></p>
+      </div>
+
+      <div class="summary-totals">
+        <div><span>Subtotal</span><span id="cart-subtotal">$0</span></div>
+        <div id="cart-discount-row" style="display:none;"><span>Descuento (10%)</span><span id="cart-discount">-$0</span></div>
+        <div><span>Envío</span><span id="cart-shipping">$800</span></div>
+        <div class="total"><span>Total</span><span id="cart-total">$0</span></div>
+      </div>
+
+      <a href="listado_box.html" class="btn btn-outline btn-block">Seguir comprando</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div>
+      <h4>Mercado Fresco</h4>
+      <p>Almacén de barrio con envío a domicilio. Productos frescos elegidos todos los días.</p>
+    </div>
+    <div>
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="listado_tabla.html">Productos en tabla</a></li>
+        <li><a href="listado_box.html">Productos en grilla</a></li>
+        <li><a href="comprar.html">Comprar</a></li>
+        <li><a href="inventario.html">Panel de inventario (interno)</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>San Martín 452, Posadas</li>
+        <li>(0376) 444-2210</li>
+        <li>hola@mercadofresco.com.ar</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container bottom">
+    Trabajo práctico académico — Paradigmas y Lenguajes de Programación III.
+  </div>
+</footer>
+
+<!-- Renderiza el carrito guardado y valida el formulario antes de "confirmar" -->
+<script src="cart.js"></script>
+<script>
+  const SHIPPING = 800;
+  let cuponValido = false; // true si el usuario ya aplicó "UCP10" con éxito
+
+  function renderCart() {
+    const cart = MercadoCart.getCart();
+    const list = document.querySelector('#cart-list');
+    const emptyMsg = document.querySelector('#cart-empty-msg');
+    list.innerHTML = '';
+
+    if (MercadoCart.isStorageBlocked()) {
+      emptyMsg.innerHTML =
+        '⚠️ Tu navegador está bloqueando el guardado del carrito en este archivo abierto localmente. ' +
+        'Abrí el sitio con un servidor local (por ejemplo <code>python -m http.server</code>) en vez de hacer doble clic en el .html.';
+      emptyMsg.style.display = 'block';
+      document.querySelector('#cart-subtotal').textContent = MercadoCart.formatPrice(0);
+      document.querySelector('#cart-shipping').textContent = MercadoCart.formatPrice(0);
+      document.querySelector('#cart-total').textContent = MercadoCart.formatPrice(0);
+      return;
+    }
+
+    if (cart.length === 0) {
+      emptyMsg.style.display = 'block';
+    } else {
+      emptyMsg.style.display = 'none';
+      cart.forEach((item) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="thumb-sm">${item.emoji}</div>
+          <div class="info">
+            <strong>${item.name}</strong>
+            <span>${item.qty} ${item.unit} × ${MercadoCart.formatPrice(item.price)}</span>
+            <br><button type="button" class="remove-btn" data-remove-id="${item.id}">Quitar</button>
+          </div>
+          <span class="line-price">${MercadoCart.formatPrice(item.qty * item.price)}</span>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    const subtotal = MercadoCart.cartSubtotal();
+    const shipping = cart.length > 0 ? SHIPPING : 0;
+    const discount = cuponValido ? subtotal * 0.10 : 0;
+
+    document.querySelector('#cart-subtotal').textContent = MercadoCart.formatPrice(subtotal);
+    document.querySelector('#cart-shipping').textContent = MercadoCart.formatPrice(shipping);
+    document.querySelector('#cart-total').textContent = MercadoCart.formatPrice(subtotal - discount + shipping);
+
+    const discountRow = document.querySelector('#cart-discount-row');
+    if (cuponValido && subtotal > 0) {
+      document.querySelector('#cart-discount').textContent = '-' + MercadoCart.formatPrice(discount);
+      discountRow.style.display = 'flex';
+    } else {
+      discountRow.style.display = 'none';
+    }
+  }
+
+  /**
+   * validarCupon()
+   * 1) Captura el texto del input #cupon.
+   * 2) Lo limpia con .trim() (espacios al inicio/final) y .toUpperCase()
+   *    (para que "ucp10" y "UCP10" se traten igual).
+   * 3) Según el resultado, muestra un mensaje y le aplica la clase CSS
+   *    correspondiente (.mensaje-error o .mensaje-exito) al <p>.
+   */
+  function validarCupon() {
+    const input = document.querySelector('#cupon');
+    const mensaje = document.querySelector('#mensaje-cupon');
+
+    const codigo = input.value.trim().toUpperCase();
+
+    // se limpian las clases previas antes de decidir cuál aplica ahora
+    mensaje.classList.remove('mensaje-error', 'mensaje-exito');
+
+    if (codigo === '') {
+      mensaje.textContent = 'Por favor, ingrese un código';
+      mensaje.classList.add('mensaje-error');
+      cuponValido = false;
+    } else if (codigo === 'UCP10') {
+      mensaje.textContent = '¡Cupón aplicado! Tenés un 10% de descuento';
+      mensaje.classList.add('mensaje-exito');
+      cuponValido = true;
+    } else {
+      mensaje.textContent = 'Código inválido o vencido';
+      mensaje.classList.add('mensaje-error');
+      cuponValido = false;
+    }
+
+    renderCart(); // recalcula subtotal/descuento/total con el nuevo estado
+  }
+
+  document.querySelector('#btn-cupon').addEventListener('click', validarCupon);
+  document.querySelector('#cupon').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      validarCupon();
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('[data-remove-id]');
+    if (!btn) return;
+    MercadoCart.removeFromCart(btn.dataset.removeId);
+    renderCart();
+  });
+
+  const form = document.querySelector('#checkout-form');
+  const cartError = document.querySelector('#cart-error');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    let valid = true;
+
+    form.querySelectorAll('[required]').forEach((input) => {
+      const errorMsg = input.closest('.field').querySelector('.field-error-msg');
+      const filled = input.value.trim() !== '';
+      const emailOk = input.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+      if (!filled || !emailOk) {
+        input.classList.add('field-error');
+        if (errorMsg) errorMsg.classList.add('is-visible');
+        valid = false;
+      } else {
+        input.classList.remove('field-error');
+        if (errorMsg) errorMsg.classList.remove('is-visible');
+      }
+    });
+
+    if (MercadoCart.getCart().length === 0) {
+      cartError.classList.add('is-visible');
+      valid = false;
+    } else {
+      cartError.classList.remove('is-visible');
+    }
+
+    if (!valid) return;
+
+    const nombre = document.querySelector('#nombre').value.trim();
+    document.querySelector('#confirm-text').textContent =
+      `Gracias, ${nombre}. Registramos tu pedido y te contactaremos para coordinar la entrega.`;
+    document.querySelector('#checkout-form').style.display = 'none';
+    document.querySelector('#confirm-panel').style.display = 'block';
+    MercadoCart.clearCart();
+    cuponValido = false;
+  });
+
+  renderCart();
+</script>
+</body>
+</html>

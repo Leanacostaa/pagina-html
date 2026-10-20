@@ -1,0 +1,18 @@
+[
+  { "id": "tomate-perita",      "nombre": "Tomate perita",           "categoria": "Frutas y verduras", "unidad": "kg",   "cantidad": 42, "umbral": 10 },
+  { "id": "papa-negra",         "nombre": "Papa negra",              "categoria": "Frutas y verduras", "unidad": "kg",   "cantidad": 120, "umbral": 20 },
+  { "id": "banana-ecuatoriana", "nombre": "Banana ecuatoriana",      "categoria": "Frutas y verduras", "unidad": "kg",   "cantidad": 6,  "umbral": 10 },
+  { "id": "leche-entera",       "nombre": "Leche entera La Serrana", "categoria": "Lácteos",           "unidad": "un.",  "cantidad": 88, "umbral": 15 },
+  { "id": "queso-cremoso",      "nombre": "Queso cremoso",           "categoria": "Lácteos",           "unidad": "un.",  "cantidad": 30, "umbral": 10 },
+  { "id": "yogur-frutilla",     "nombre": "Yogur bebible frutilla",  "categoria": "Lácteos",           "unidad": "un.",  "cantidad": 4,  "umbral": 12 },
+  { "id": "bife-chorizo",       "nombre": "Bife de chorizo",         "categoria": "Carnicería",        "unidad": "kg",   "cantidad": 25, "umbral": 8 },
+  { "id": "milanesa-nalga",     "nombre": "Milanesa de nalga",       "categoria": "Carnicería",        "unidad": "kg",   "cantidad": 18, "umbral": 8 },
+  { "id": "pan-frances",        "nombre": "Pan francés",             "categoria": "Panadería",         "unidad": "kg",   "cantidad": 60, "umbral": 15 },
+  { "id": "facturas-surtidas",  "nombre": "Facturas surtidas",       "categoria": "Panadería",         "unidad": "doc.", "cantidad": 3,  "umbral": 5 },
+  { "id": "detergente",         "nombre": "Detergente x 750 ml",     "categoria": "Limpieza",          "unidad": "un.",  "cantidad": 40, "umbral": 10 },
+  { "id": "agua-mineral",       "nombre": "Agua mineral sin gas",    "categoria": "Bebidas",           "unidad": "un.",  "cantidad": 75, "umbral": 15 },
+  { "id": "arroz-largo-fino",   "nombre": "Arroz largo fino",        "categoria": "Almacén",           "unidad": "kg",   "cantidad": 50, "umbral": 12 },
+  { "id": "aceite-girasol",     "nombre": "Aceite de girasol 1.5L",  "categoria": "Almacén",           "unidad": "un.",  "cantidad": 8,  "umbral": 10 },
+  { "id": "alfajor-maicena",    "nombre": "Alfajor de maicena",      "categoria": "Kiosco",            "unidad": "un.",  "cantidad": 60, "umbral": 15 },
+  { "id": "chocolate-barra",    "nombre": "Chocolate en barra",      "categoria": "Kiosco",            "unidad": "un.",  "cantidad": 5,  "umbral": 10 }
+]
