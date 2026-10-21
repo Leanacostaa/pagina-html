@@ -13,15 +13,14 @@
  *     y se cuenta en el resumen de arriba.
  *  4) VSDM (vista Cliente vs. vista Empleado): el mismo panel muestra
  *     distinta información y acciones según el rol elegido en
- *     #selector-rol. Es una simulación en el cliente (no hay login
- *     real), pensada para argumentar el modelo de vistas separadas
- *     por rol de acceso que plantea VSDM — no como mecanismo de
- *     seguridad real.
+ *     #selector-rol. La selección de rol es una simulación visual
+ *     para argumentar VSDM y no concede permisos en el servidor.
  */
 (function () {
   "use strict";
 
   const STOCK_URL = "stock.json";
+  const API_URL = "api/";
 
   // Estado del módulo, encapsulado dentro de este IIFE.
   // rolActual arranca en null: se sincroniza al valor real del <select>
@@ -30,6 +29,100 @@
   // el JS la sigue automáticamente en vez de tener un valor hardcodeado).
   let inventario = [];
   let rolActual = null; // "cliente" | "empleado"  → vista VSDM activa
+  let usuarioActual = null;
+
+  async function enviarJson(endpoint, datos) {
+    const respuesta = await fetch(API_URL + endpoint, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos),
+    });
+    const resultado = await respuesta.json();
+    if (!respuesta.ok) {
+      throw new Error(resultado.error || "No se pudo completar la operación.");
+    }
+    return resultado;
+  }
+
+  async function verificarSesion() {
+    const respuesta = await fetch(API_URL + "perfil.php", {
+      credentials: "same-origin",
+      cache: "no-store",
+    });
+    if (respuesta.status === 401) {
+      actualizarVistaSesion(null);
+      mostrarEstadoAuth("No hay una sesión activa. Iniciá sesión o creá una cuenta.");
+      return;
+    }
+    const resultado = await respuesta.json();
+    if (!respuesta.ok) {
+      throw new Error(resultado.error || "No se pudo verificar la sesión.");
+    }
+    actualizarVistaSesion(resultado.usuario);
+  }
+
+  function actualizarVistaSesion(usuario) {
+    usuarioActual = usuario;
+    document.querySelector("#formularios-auth").hidden = Boolean(usuario);
+    document.querySelector("#cuenta-activa").hidden = !usuario;
+    if (usuario) {
+      document.querySelector("#saludo-usuario").textContent =
+        `Sesión iniciada como ${usuario.nombre} (${usuario.email}).`;
+      mostrarEstadoAuth("Tu sesión está activa.");
+    }
+  }
+
+  function mostrarEstadoAuth(texto, esError = false) {
+    const estado = document.querySelector("#estado-auth");
+    estado.textContent = texto;
+    estado.classList.toggle("mensaje-error", esError);
+    estado.classList.toggle("mensaje-exito", !esError);
+  }
+
+  function configurarAutenticacion() {
+    document.querySelector("#form-registro").addEventListener("submit", async (evento) => {
+      evento.preventDefault();
+      const formulario = evento.currentTarget;
+      const datos = new FormData(formulario);
+      try {
+        const respuesta = await enviarJson("registro.php", {
+          nombre: datos.get("nombre"),
+          email: datos.get("email"),
+          password: datos.get("password"),
+        });
+        formulario.reset();
+        mostrarEstadoAuth(respuesta.mensaje);
+      } catch (error) {
+        mostrarEstadoAuth(error.message, true);
+      }
+    });
+
+    document.querySelector("#form-login").addEventListener("submit", async (evento) => {
+      evento.preventDefault();
+      const datos = new FormData(evento.currentTarget);
+      try {
+        await enviarJson("login.php", {
+          email: datos.get("email"),
+          password: datos.get("password"),
+        });
+        evento.currentTarget.reset();
+        await verificarSesion();
+      } catch (error) {
+        mostrarEstadoAuth(error.message, true);
+      }
+    });
+
+    document.querySelector("#btn-logout").addEventListener("click", async () => {
+      try {
+        await enviarJson("logout.php", {});
+        actualizarVistaSesion(null);
+        mostrarEstadoAuth("Sesión cerrada.");
+      } catch (error) {
+        mostrarEstadoAuth(error.message, true);
+      }
+    });
+  }
 
   /* ---------- Acceso a datos (asincrónico) ---------- */
 
@@ -90,42 +183,74 @@
       return coincideCategoria && coincideBusqueda;
     });
 
-    tbody.innerHTML = "";
+    tbody.replaceChildren();
 
     visibles.forEach((item) => {
       const critico = esCritico(item);
       const tr = document.createElement("tr");
       tr.className = critico ? "stock-critico" : "";
 
-      tr.innerHTML = `
-        <td><strong>${item.nombre}</strong></td>
-        <td><span class="tag">${item.categoria}</span></td>
-        <td>${item.cantidad} ${item.unidad}</td>
-        <td>${item.umbral} ${item.unidad}</td>
-        <td>
-          ${
-            critico
-              ? '<span class="alert-badge">⚠ Stock crítico</span>'
-              : '<span class="stock-ok">OK</span>'
-          }
-        </td>
-        <td class="col-empleado">
-          <div class="qty-box qty-box-sm">
-            <button type="button" data-stock-action="restar" data-id="${item.id}" aria-label="Restar">−</button>
-            <span>${item.cantidad}</span>
-            <button type="button" data-stock-action="sumar" data-id="${item.id}" aria-label="Sumar">+</button>
-          </div>
-        </td>
-      `;
+      const nombre = document.createElement("strong");
+      nombre.textContent = item.nombre;
+      tr.appendChild(crearCelda(nombre));
+
+      const categoria = document.createElement("span");
+      categoria.className = "tag";
+      categoria.textContent = item.categoria;
+      tr.appendChild(crearCelda(categoria));
+      tr.appendChild(crearCelda(`${item.cantidad} ${item.unidad}`));
+      tr.appendChild(crearCelda(`${item.umbral} ${item.unidad}`));
+
+      const estado = document.createElement("span");
+      estado.className = critico ? "alert-badge" : "stock-ok";
+      estado.textContent = critico ? "⚠ Stock crítico" : "OK";
+      tr.appendChild(crearCelda(estado));
+
+      const acciones = document.createElement("td");
+      acciones.className = "col-empleado";
+      const caja = document.createElement("div");
+      caja.className = "qty-box qty-box-sm";
+      const restar = crearBotonStock("restar", item.id, "−", "Restar");
+      const cantidad = document.createElement("span");
+      cantidad.textContent = item.cantidad;
+      const sumar = crearBotonStock("sumar", item.id, "+", "Sumar");
+      caja.append(restar, cantidad, sumar);
+      acciones.appendChild(caja);
+      tr.appendChild(acciones);
       tbody.appendChild(tr);
     });
 
     if (visibles.length === 0) {
-      tbody.innerHTML =
-        '<tr><td colspan="6" style="text-align:center; color:var(--ink-soft); padding:24px;">No hay productos que coincidan con el filtro.</td></tr>';
+      const fila = document.createElement("tr");
+      const celda = document.createElement("td");
+      celda.colSpan = 6;
+      celda.className = "sin-resultados";
+      celda.textContent = "No hay productos que coincidan con el filtro.";
+      fila.appendChild(celda);
+      tbody.appendChild(fila);
     }
 
     actualizarResumen();
+  }
+
+  function crearCelda(contenido) {
+    const celda = document.createElement("td");
+    if (contenido instanceof Node) {
+      celda.appendChild(contenido);
+    } else {
+      celda.textContent = contenido;
+    }
+    return celda;
+  }
+
+  function crearBotonStock(accion, id, texto, etiqueta) {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.dataset.stockAction = accion;
+    boton.dataset.id = id;
+    boton.setAttribute("aria-label", etiqueta);
+    boton.textContent = texto;
+    return boton;
   }
 
   function actualizarResumen() {
@@ -165,6 +290,8 @@
   /* ---------- Cableado de eventos (todo acá, nada en el HTML) ---------- */
 
   function inicializar() {
+    configurarAutenticacion();
+
     document
       .querySelector("#btn-refrescar")
       .addEventListener("click", cargarInventario);
@@ -197,6 +324,9 @@
     // de verdad), no de una constante repetida en el JS.
     aplicarRol(document.querySelector("#selector-rol").value);
     cargarInventario();
+    verificarSesion().catch((error) => {
+      mostrarEstadoAuth(error.message, true);
+    });
   }
 
   document.addEventListener("DOMContentLoaded", inicializar);

@@ -52,6 +52,35 @@
     <button type="button" id="btn-refrescar" class="btn btn-outline">↻ Refrescar</button>
   </div>
 
+  <section class="auth-panel" aria-labelledby="auth-titulo">
+    <h3 id="auth-titulo">Cuenta de usuario</h3>
+    <p id="estado-auth" class="loading-note" role="status" aria-live="polite">Verificando sesión…</p>
+    <div id="formularios-auth" class="auth-forms">
+      <form id="form-login" class="auth-form">
+        <h4>Iniciar sesión</h4>
+        <label for="login-email">Correo electrónico</label>
+        <input id="login-email" name="email" type="email" autocomplete="email" required maxlength="254">
+        <label for="login-password">Contraseña</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        <button type="submit" class="btn">Entrar</button>
+      </form>
+      <form id="form-registro" class="auth-form">
+        <h4>Crear cuenta</h4>
+        <label for="registro-nombre">Nombre</label>
+        <input id="registro-nombre" name="nombre" type="text" autocomplete="name" required maxlength="120">
+        <label for="registro-email">Correo electrónico</label>
+        <input id="registro-email" name="email" type="email" autocomplete="email" required maxlength="254">
+        <label for="registro-password">Contraseña</label>
+        <input id="registro-password" name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="72">
+        <button type="submit" class="btn btn-mustard">Crear cuenta</button>
+      </form>
+    </div>
+    <div id="cuenta-activa" class="account-active" hidden>
+      <p id="saludo-usuario"></p>
+      <button type="button" id="btn-logout" class="btn btn-outline">Cerrar sesión</button>
+    </div>
+  </section>
+
   <!-- Selector de rol: demuestra VSDM (Vista Cliente vs. Vista Empleado) sobre el mismo panel -->
   <div class="role-switch">
     <label for="selector-rol">Ver panel como:</label>

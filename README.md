@@ -43,7 +43,8 @@ mercado-fresco/
 ├── cart.js                 Lógica del carrito (JS del lado del cliente, sin backend)
 ├── catalogo-filtro.js       Buscador y filtro de catálogo en tiempo real (Opción 3 — Santiago)
 ├── precio-dinamico.js       Contador de selección y subtotal en tiempo real (Opción 7 — Leandro)
-├── app.js                   Panel de inventario y alerta de estado crítico (Opción 12 — Tomás)
+├── app.js                   Panel de inventario, autenticación y estado de sesión
+├── api/                     Endpoints PHP y esquema SQL de usuarios
 └── README.md                Este archivo
 ```
 
@@ -53,7 +54,7 @@ mercado-fresco/
 - **Tipografía:** `Bitter` (serif, tipo cartel de almacén) para títulos, `Mulish` (sans-serif) para texto y componentes de interfaz.
 - **Layout:** alineación mayormente a la izquierda, grillas de 4 columnas para categorías y productos, navegación fija (sticky) en la parte superior.
 - **Componentes reutilizables:** `.btn`, `.product-card`, `table.products`, `.cat-card`, `.pay-option`, `.cart-list`, `.filter-row` — todos definidos en `styles.css` para mantener consistencia entre páginas.
-- **Alcance:** maquetado en HTML/CSS (lo que se evalúa) + una capa de JavaScript del lado del cliente para que el flujo se sienta real: `products.js` centraliza el catálogo como única fuente de datos, `producto.html` lee el producto a mostrar desde la URL (`?id=...`), y los listados filtran de verdad por categoría (`?cat=...`), por ofertas (`?filter=ofertas`) y por texto libre. Los botones "Agregar" suman productos a un carrito guardado en el navegador (`localStorage`), `comprar.html` muestra ese carrito con sus totales, y el formulario valida los campos obligatorios antes de confirmar. No hay backend ni base de datos — todo corre en el navegador.
+- **Alcance:** catálogo y carrito siguen del lado del cliente. El panel de inventario incorpora una API PHP/MySQL para registro e inicio de sesión; las contraseñas se guardan con BCRYPT y `api/perfil.php` requiere una sesión válida. El selector Cliente/Empleado es una demostración visual y no concede permisos en el servidor.
 - **Selectores:** todo el JavaScript usa `document.querySelector()`/`querySelectorAll()` en vez de `getElementById()`, para un desacoplamiento total entre la lógica y la estructura del HTML (corrección aplicada tras la devolución del profesor).
 
 ## Reto "Startup Relámpago" (AE2) — las tres funciones integradas
@@ -88,18 +89,28 @@ producto por debajo de su umbral se marca como crítico. Incluye además un sele
 de rol (Cliente/Empleado) que alterna la vista mostrada sobre el mismo panel.
 **Fundamentación U1 — VSDM:** vistas separadas por rol de acceso — es una
 simulación del lado del cliente (sin login real), documentada dentro de la propia
-página.
+página. La autenticación de cuentas se implementa por separado mediante `api/`.
+
+### API de autenticación
+
+Se requiere PHP 8+, las extensiones `pdo` y `pdo_mysql`, y un servidor MySQL.
+Importá `api/schema.sql` desde phpMyAdmin y configurá `DB_HOST`, `DB_PORT`,
+`DB_NAME`, `DB_USER` y `DB_PASSWORD` en el entorno de PHP. Los endpoints JSON son
+`POST api/registro.php`, `POST api/login.php`, `GET api/perfil.php` y
+`POST api/logout.php`. El perfil responde `401 Unauthorized` si no hay sesión.
 
 ## Cómo verlo
 
 Todas las páginas que usan `fetch()` (`inventario.html`, `producto.html`,
 `listado_tabla.html`, `listado_box.html`) necesitan abrirse por `http://`, no por
 `file://` (el navegador bloquea tanto `fetch()` como `localStorage` en archivos
-locales abiertos con doble clic). Alcanza con levantar un servidor simple en la
-carpeta del proyecto:
+locales abiertos con doble clic). Para ejecutar los endpoints PHP, usá el servidor
+integrado de PHP desde la carpeta del proyecto, con `pdo_mysql` habilitado y las
+variables de entorno de la base configuradas:
 
 ```
-python -m http.server 8000
+php -S 127.0.0.1:8000
 ```
 
-y abrir `http://localhost:8000` en el navegador.
+Abrí `http://localhost:8000` en el navegador. `python -m http.server` solo sirve
+archivos estáticos y no ejecuta los endpoints PHP.

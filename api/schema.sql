@@ -1,0 +1,15 @@
+CREATE DATABASE IF NOT EXISTS mercado_fresco
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE mercado_fresco;
+
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(120) NOT NULL,
+  email VARCHAR(254) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY usuarios_email_unique (email)
+) ENGINE=InnoDB;
